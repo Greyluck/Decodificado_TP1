@@ -1,8 +1,7 @@
-"""
-Etapa 2: Diccionario
-El responsable de esta etapa es es Tomas Galluccio.
-El responsable de su revision es Lucas Aldonate.
-"""
+"""Etapa 2: Diccionario"""
+# El responsable de esta etapa es es Tomas Galluccio.
+# El responsable de su revision es Lucas Aldonate.
+
 
 from datos import obtener_lista_definiciones
 def return_short_words(main_list):
@@ -42,18 +41,26 @@ def return_quantity(short_word_dicc):
         
     return out_dicc_just_letter, total_words_in_dicc
 
-def main():
+def main_etapa2():
     """
-    Recibe una lista que contiene las palabras candidatas
-    y sus definiciones, las analiza y retorna un out_dicc con palabras especificas. Para, posteriormente
-    haberiguar cuantas palabras inician.
+    Esta funcion asume el rol parecido de main destinado unicamente a la Etapa 2,
+    
+    Recibe una lista que contiene las palabras candidatas y sus definiciones.
+    Las analiza y retorna un out_dicc con palabras especificas.
+    Adicionalmente devuelve el su total de palabras. Y cuantas pertenecen a cada letra.
     """
+    # Obtiene una lista aleatoria de definiciones
     main_list= obtener_lista_definiciones()
+
+    # Filtra las listas para que regrese aquellas cuyo largo es valido
     short_word_dicc= return_short_words(main_list)
-    quantity, total= return_quantity(short_word_dicc) #return_quantity devuelve cantidad y total
+
+    #return_quantity devuelve cantidad de palabras por letra y total de palabras
+    quantity, total= return_quantity(short_word_dicc) 
+    
     print("Los numeros de palabras por letra son: ", quantity, ". Su total es:", total)
     
-main()
+#main_etapa2()
 
 
 

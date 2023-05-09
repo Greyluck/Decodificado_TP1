@@ -1,9 +1,8 @@
-"""
-Etapa 1: Interacción
-El responsable de esta etapa es Lucas Aldonate.
-El responsable de su revision es Valentino Ceniceros.
-(Esta seccion fue revisada adicionalmente por Emilio Ontiveros.)
-"""
+"""Etapa 1: Interacción"""
+# El responsable de esta etapa es Lucas Aldonate.
+# El responsable de su revision es Valentino Ceniceros.
+# (Esta seccion fue revisada adicionalmente por Emilio Ontiveros.)
+
 import string 
 
 def show_letterboard(random_letters): 
@@ -90,19 +89,25 @@ def run_match(words_dict, words, random_letters):
     return results
     # PUEDE RETORNAR CANTIDAD DE ACIERTOS Y ERRORES PARA IR CALCULANDO RESULTADOS (10 PTS ACIERTO/-3 PTS ERROR) CON ETAPA 5
 
-def main(): 
+def main_etapa1(): 
     '''
     Esta funcion tiene un rol parecido a lo que seria un main, pero solo destinado a la Etapa 1,
     ejecuta todo lo necesario para poner el juego en funcionamiento de una manera ordenada
     '''
     # ----------------------------------------------------------- # 
-    words_dict = {n:f'{n}definicion' for n in string.ascii_lowercase} # ACA SE USA LA FUNCION QUE GENERA EL DICCIONARIO - ETAPA 2
-    words = [n for n in string.ascii_lowercase[:10]] # ACA SE USA LA FUNCION QUE GENERA LA LISTA DE 10 PALABRAS - ETAPA 3
-    random_letters = ['a','b','c','e','f','g','h','i','t','z']  # ACA SE USA LA FUNCION QUE GENERA LA LISTA DE LETRAS RANDOM - ETAPA 3
+    # ACA SE USA LA FUNCION QUE GENERARIA EL DICCIONARIO (EN LA ETAPA 2)
+    words_dict = {n:f'{n}definicion' for n in string.ascii_lowercase}
+
+    # ACA SE USA LA FUNCION QUE GENERARIA LA LISTA DE 10 PALABRAS (EN LA ETAPA 3)
+    words = [n for n in string.ascii_lowercase[:10]]  
+
+    # ACA SE USA LA FUNCION QUE GENERARIA LA LISTA DE LETRAS RANDOM (EN LA ETAPA 3)
+    random_letters = ['a','b','c','e','f','g','h','i','t','z']  
     # ----------------------------------------------------------- # 
+    
     run_match(words_dict, words, random_letters)
     # ACA VA LA ETAPA 5
 
-main()
+#main_etapa1()
 
 
