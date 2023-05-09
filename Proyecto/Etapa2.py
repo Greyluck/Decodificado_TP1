@@ -1,5 +1,10 @@
-from datos import obtener_lista_definiciones
+"""
+Etapa 2: Diccionario
+El responsable de esta etapa es es Tomas Galluccio.
+El responsable de su revision es Lucas Aldonate.
+"""
 
+from datos import obtener_lista_definiciones
 def return_short_words(main_list):
     """
     Recibe la lista principal y devuleve un diccionario con palabras de un largo determinado
@@ -46,7 +51,7 @@ def main():
     main_list= obtener_lista_definiciones()
     short_word_dicc= return_short_words(main_list)
     quantity, total= return_quantity(short_word_dicc) #return_quantity devuelve cantidad y total
-    print("Los numeros de palabras por letra son: ", quantity, "y el total es: ", total)
+    print("Los numeros de palabras por letra son: ", quantity, ". Su total es:", total)
     
 main()
 

@@ -1,8 +1,19 @@
 """
-Esta funcion sera completada mas adelante. Se la creo para organizar la integracion
+Etapa 4: Integracion
+El responsable de esta etapa es Emilio Ontiveros.
+El responsable de su revision es Santiago Testa.
 """
-def main():
+
+def play_the_game():
+    # Generación del diccionario de palabras.
+        
+    # Seleccion de letras participantes
+    
+    # Seleccion de lista de palabras a adivinar
+        
+    # Creacion del tablero
+
     return True
 
-print ("Se ejecuto main?",main())
-    
+def main():
+    play_the_game()
