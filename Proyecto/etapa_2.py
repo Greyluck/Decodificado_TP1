@@ -46,7 +46,7 @@ def main():
     main_list= obtener_lista_definiciones()
     short_word_dicc= return_short_words(main_list)
     quantity, total= return_quantity(short_word_dicc) #return_quantity devuelve cantidad y total
-    print("Los numeros de palabras por letra son: ", quantity, "y el total es: ", total)
+    # print("Los numeros de palabras por letra son: ", quantity, "y el total es: ", total)
     
 main()
 
