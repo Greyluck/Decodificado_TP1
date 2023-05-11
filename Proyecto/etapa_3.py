@@ -96,5 +96,4 @@ def main():
         for ii in range(len(rosco)):
             print("LETRA:",letras[ii],"| PALABRA:",rosco[ii])
 
-
 main()
