@@ -1,3 +1,7 @@
+"""Etapa 2: Diccionario"""
+# El responsable de esta etapa es es Tomas Galluccio.
+# El responsable de su revision es Lucas Aldonate.
+
 from datos import obtener_lista_definiciones
 
 def return_short_words(main_list):
@@ -37,7 +41,7 @@ def return_quantity(short_word_dicc):
         
     return out_dicc_just_letter, total_words_in_dicc
 
-def main():
+def main_etapa2():
     """
     Recibe una lista que contiene las palabras candidatas
     y sus definiciones, las analiza y retorna un out_dicc con palabras especificas. Para, posteriormente
@@ -48,7 +52,7 @@ def main():
     quantity, total= return_quantity(short_word_dicc) #return_quantity devuelve cantidad y total
     print("Los numeros de palabras por letra son: ", quantity, "y el total es: ", total)
     
-main()
+#main_etapa2()
 
 
 

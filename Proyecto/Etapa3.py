@@ -3,13 +3,12 @@
 # El responsable de su revision es Tomas Galluccio.
 
 from datos import obtener_lista_definiciones
-from etapa_2 import return_short_words
+from Etapa2 import return_short_words
 import random
 
 def ObtenerLetras(letras):
     '''
-    Esta funcion recibe la lista de letras y te devuelve otra lista de 10 letras elegidas pseudo-aleatoriamente (ignorar el pseudo en la 
-    expresion anterior) 
+    Esta funcion recibe la lista de letras y te devuelve otra lista de 10 letras elegidas aleatoriamente 
     La lista esta ordenada alfabeticamente
     '''
     
@@ -86,7 +85,7 @@ def ObtenerPalabrasAcentuadas(letra,palabras):
 
     return resultado
 
-def main():
+def main_etapa3():
     lista_abecedario=["a","b","c", "d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","v","w","x","y","z"]
 
     diccionario = return_short_words(obtener_lista_definiciones())
@@ -101,4 +100,4 @@ def main():
             print("LETRA:",letras[ii],"| PALABRA:",rosco[ii])
 
 
-main()
+main_etapa3()

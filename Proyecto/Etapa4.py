@@ -21,7 +21,7 @@ def play_the_game():
 
     # Seleccion de lista de palabras a adivinar
     
-        
+    
     # Creacion del tablero
 
     return True

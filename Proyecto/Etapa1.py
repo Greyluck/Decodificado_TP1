@@ -1,4 +1,4 @@
-"""Etapa 1: Interacción"""
+"""Etapa 1: Interacción con usuario"""
 # El responsable de esta etapa es Lucas Aldonate.
 # El responsable de su revision es Valentino Ceniceros.
 # (Esta seccion fue revisada adicionalmente por Emilio Ontiveros.)
