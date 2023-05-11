@@ -4,6 +4,9 @@
 
 from datos import obtener_lista_definiciones
 
+alphabet=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","v","w","x","y","z"]
+alphabetWithAccent=["a","á","b","c","d","e","é","f","g","h","i","í","j","k","l","m","n","ñ","o","ó","p","q","r","s","t","u","ú","v","w","x","y","z"]
+
 def return_short_words(main_list):
     """
     Recibe la lista principal y devuleve un diccionario con palabras de un largo determinado
@@ -25,7 +28,7 @@ def return_quantity(short_word_dicc):
     Devuleve la cantidad de palabras que inician con una letra en especifico y la cantidad total de 
     palabras en el diccioanrio
     """
-    lista_abecedario=["a","b","c", "d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","v","w","x","y","z"]
+    
     INDEX_NAME=0
     out_dicc_just_letter={}
     lista_de_palabras=[]
@@ -35,9 +38,9 @@ def return_quantity(short_word_dicc):
 
     total_words_in_dicc=0
 
-    for letra in lista_abecedario:
-        out_dicc_just_letter[letra]= lista_de_palabras.count(letra)
-        total_words_in_dicc += out_dicc_just_letter[letra]
+    for letter in alphabetWithAccent:
+        out_dicc_just_letter[letter]= lista_de_palabras.count(letter)
+        total_words_in_dicc += out_dicc_just_letter[letter]
         
     return out_dicc_just_letter, total_words_in_dicc
 

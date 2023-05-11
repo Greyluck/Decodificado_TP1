@@ -2,59 +2,46 @@
 # El responsable de esta etapa es Emilio Ontiveros.
 # El responsable de su revision es Santiago Testa.
 
+# -----------------------------------------------------------------------------------------------
+# Imports
+# -----------------------------------------------------------------------------------------------
 import Etapa1
 import Etapa2
 import Etapa3
-import Etapa5
 
-debugMode=True
-if debugMode: print("In debug mode")
-
-def play_the_game():
-    if debugMode: print(" - Ejecutando play_the_game")
-    
-    # Generación del diccionario de palabras.
-    generateDiccionary()
-    
-    # Seleccion de letras participantes
-    selectLetters()
-
-    # Seleccion de lista de palabras a adivinar
-    
-    
-    # Creacion del tablero
-
-    return True
-
-def main():
-    # -----------------------------------------------------------------------------------------------
-    # La funcion main_etapa1() ejecuta todos los puntos requeridos para esta etapa,
-    # como fueron realizados en etapas previas, se la incluye aqui solo a modo de muestra.
-    # debajo de la linea se continua con la ejecucion del programa segun lo pedido para esta etapa.
-    # -----------------------------------------------------------------------------------------------
-
-    # Start
+# -----------------------------------------------------------------------------------------------
+# Main
+# -----------------------------------------------------------------------------------------------
+def main_etapa4():
     play_the_game()
 
+# -----------------------------------------------------------------------------------------------
+# Methods
+# -----------------------------------------------------------------------------------------------
+def play_the_game():
+    """Ejecuta una partida de juego y devuelve los resultados de la misma"""
+    
+    # Generación del diccionario de palabras. (Etapa2)
+    word_dictionary = generate_diccionary()
+    
+    # Seleccion de 10 letras aleatorias (Etapa3)
+    random_letters = Etapa3.return_random_letters(Etapa2.alphabetWithAccent)
 
+    # Seleccion de lista de palabras a adivinar (Etapa3).
+    words_list = Etapa3.generate_rosco(word_dictionary,random_letters)
+    
+    # Creacion del tablero (Etapa1)
+    results = Etapa1.run_match(word_dictionary, words_list, random_letters)
+    
+    return results
 
-
-
-def generateDiccionary():
+def generate_diccionary():
     """Genera y devuelve el diccionario a ser usado durante el juego"""
     # Obtiene una lista aleatoria de definiciones
     main_list = Etapa2.obtener_lista_definiciones()
     
     # Filtra las listas para que regrese aquellas cuyo largo es valido (Mayor a 5)
     short_word_dicc = Etapa2.return_short_words(main_list)
+    return short_word_dicc
 
-    if debugMode: print(" - Imprimiendo diccionario de palabras cortas\n", short_word_dicc )
-
-def selectLetters():
-    """Selecciona las letras participantes"""
-    # TODO Como la etapa 3 no fue entregada todavia se utilizara una lista hardocdeada a modo de placeholder hasta
-    # que la etapa 3 este terminada. Esta lista contiene 10 letras (que deberian ser aleatorias)
-    words = ["a","b","c","r","t", "o","h","ñ","j","k"] 
-    return words
-
-main()
+#main_etapa4()

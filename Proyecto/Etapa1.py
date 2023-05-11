@@ -62,7 +62,8 @@ def add_answer(word, actual_letter, correct_word, resultboard, turns_description
     
 def run_match(words_dict, words, random_letters):
     '''
-    Esta funcion recibe como parametros el diccionario de palabras:definiciones y la lista de palabras a usar.
+    Esta funcion recibe como parametros el diccionario de palabras|definiciones,
+    la lista de palabras a usar y las letras aleatorias.
     Se encarga de generar el desarrollo de la partida.
     (Es la funcion principal de la Etapa 1)
     '''
