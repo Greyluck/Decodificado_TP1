@@ -38,8 +38,7 @@ def validate_lenght_and_grammar(string, lenght):
 def add_answer(word, actual_letter, correct_word, resultboard, turns_description_list, turns, success, mistake): 
     '''
     Esta funcion recibe como parametros los datos necesarios para guardar el resultado de cada turno
-    con el fin de imprimirlos al final de la partida, asi como tambien decide si el usuario acerto o cometio
-    un error adivinando la palabra
+    con el fin de imprimirlos al final de la partida
     '''
     if word == correct_word:
         resultboard[turns] = '[a]'
@@ -67,13 +66,14 @@ def run_match(words_dict, words, random_letters):
     turns = 0 # ITERADOR TANTO DE LAS LETRAS COMO DE LA PALABRA EN EL TURNO ACTUAL
     success = 0 # CONTADOR DE ACIERTOS
     mistake = 0 # CONTADOR DE ERRORES
+    LETRA = 1 #CONSTANTE DEL INDICE LETRA
     turns_description_list = []
     while turns < turns_per_match:
         letters_in_board = ''.join(letters_list)
         results_in_board = ''.join(resultboard)
         print_board(letters_in_board, results_in_board, success, mistake, letters_list, turns, words, words_dict)
         word = validate_lenght_and_grammar(ask_for_word(), len(words[turns])) # VERIFICA LA PALABRA DEPENDIENDO DEL LARGO DE LA PALABRA EN EL TURNO ACTUAL
-        success, mistake = add_answer(word, letters_list[turns][1], words[turns], resultboard, turns_description_list, turns, success, mistake)
+        success, mistake = add_answer(word, letters_list[turns][LETRA], words[turns], resultboard, turns_description_list, turns, success, mistake)
         turns += 1
     letters_in_board = ''.join(letters_list)
     results_in_board = ''.join(resultboard)
@@ -84,7 +84,7 @@ def run_match(words_dict, words, random_letters):
     return results
     # PUEDE RETORNAR CANTIDAD DE ACIERTOS Y ERRORES PARA IR CALCULANDO RESULTADOS (10 PTS ACIERTO/-3 PTS ERROR) CON ETAPA 5
 
-def main(): 
+def play_game(): 
     '''
     Esta funcion tiene un rol parecido a lo que seria un main, pero solo destinado a la Etapa 1,
     ejecuta todo lo necesario para poner el juego en funcionamiento de una manera ordenada
@@ -92,11 +92,11 @@ def main():
     # ----------------------------------------------------------- # 
     words_dict = {n:f'{n}definicion' for n in string.ascii_lowercase} # ACA SE USA LA FUNCION QUE GENERA EL DICCIONARIO - ETAPA 2
     words = [n for n in string.ascii_lowercase[:10]] # ACA SE USA LA FUNCION QUE GENERA LA LISTA DE 10 PALABRAS - ETAPA 3
-    random_letters = ['a','b','c','e','f','g','h','i','t','z']  # ACA SE USA LA FUNCION QUE GENERA LA LISTA DE LETRAS RANDOM - ETAPA 3
+    random_letters = ['a','b','c','d','e','f','g','h','i','j']  # ACA SE USA LA FUNCION QUE GENERA LA LISTA DE LETRAS RANDOM - ETAPA 3
     # ----------------------------------------------------------- # 
-    run_match(words_dict, words, random_letters)
+    results = run_match(words_dict, words, random_letters)
     # ACA VA LA ETAPA 5
+    return results
 
-main()
 
 
