@@ -54,9 +54,14 @@ def generate_rosco(diccionario,letras):
         while palabras_utilizables[i][0] is letra:
             palabras_letra.append(palabras_utilizables[i])
             i += 1
-        
-        print(letra)
+    
         # TIRAR DADO PARA ELEGIR PALABRA PARA LA LETRA
+        print("ACA!")
+        print(palabras_letra)
+        print(0,len(palabras_letra) - 1)
+        print(random.randint(0,len(palabras_letra) - 1))
+        print(palabras_letra[random.randint(0,len(palabras_letra) - 1)])
+        print(resultado.append(palabras_letra[random.randint(0,len(palabras_letra) - 1)]))
         resultado.append(palabras_letra[random.randint(0,len(palabras_letra) - 1)])
     return resultado
 
@@ -85,15 +90,14 @@ def ObtenerPalabrasAcentuadas(letra,palabras):
     return resultado
 
 def main_etapa3():
-    alphabet=Etapa2.alphabet
     diccionario = return_short_words(obtener_lista_definiciones())
     
     # TEST DE CONSIGA
     for i in range(1,101):
         print("Intento numero:",i)
-        letras = return_random_letters(alphabet)
+        letras = return_random_letters(Etapa2.ALPHABET)
         rosco = generate_rosco(diccionario, letras)
         for ii in range(len(rosco)):
             print("LETRA:",letras[ii],"| PALABRA:",rosco[ii])
 
-main_etapa3()
+#main_etapa3()

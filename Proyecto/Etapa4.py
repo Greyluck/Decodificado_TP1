@@ -25,7 +25,7 @@ def play_the_game():
     word_dictionary = generate_diccionary()
     
     # Seleccion de 10 letras aleatorias (Etapa3)
-    random_letters = Etapa3.return_random_letters(Etapa2.alphabetWithAccent)
+    random_letters = Etapa3.return_random_letters(Etapa2.ALPHABET)
 
     # Seleccion de lista de palabras a adivinar (Etapa3).
     words_list = Etapa3.generate_rosco(word_dictionary,random_letters)
@@ -44,4 +44,4 @@ def generate_diccionary():
     short_word_dicc = Etapa2.return_short_words(main_list)
     return short_word_dicc
 
-#main_etapa4()
+main_etapa4()

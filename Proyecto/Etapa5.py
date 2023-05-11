@@ -1,4 +1,4 @@
-from playgame import *
+import Etapa4
 
 def acumulate_points(results,SUCCESS_POINTS = 10, FAIL_POINTS = -3):
     """
@@ -17,7 +17,7 @@ def play_match():
     points = 0
     decision = True 
     while decision:
-        results = play_game()
+        results = Etapa4.play_the_game()
         points += acumulate_points(results)
         print(f"Puntaje Final: {points}")
         play_again = str(input("si desea seguir jugando, escriba ok, caso contrario escriba no: "))
