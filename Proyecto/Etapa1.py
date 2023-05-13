@@ -43,8 +43,7 @@ def validate_lenght_and_grammar(string, lenght):
 def add_answer(word, actual_letter, correct_word, resultboard, turns_description_list, turns, success, mistake): 
     '''
     Esta funcion recibe como parametros los datos necesarios para guardar el resultado de cada turno
-    con el fin de imprimirlos al final de la partida, asi como tambien decide si el usuario acerto o cometio
-    un error adivinando la palabra
+    (acierto/error) con el fin de imprimirlos al final de la partida
     '''
     if word == correct_word:
         resultboard[turns] = '[a]'
@@ -88,7 +87,6 @@ def run_match(words_dict, words, random_letters):
         print(answer)
     results = (success, mistake)
     return results
-    # PUEDE RETORNAR CANTIDAD DE ACIERTOS Y ERRORES PARA IR CALCULANDO RESULTADOS (10 PTS ACIERTO/-3 PTS ERROR) CON ETAPA 5
 
 def main_etapa1(): 
     '''
@@ -104,10 +102,12 @@ def main_etapa1():
 
     # ACA SE USA LA FUNCION QUE GENERARIA LA LISTA DE LETRAS RANDOM (EN LA ETAPA 3)
     random_letters = ['a','b','c','e','f','g','h','i','t','z']  
+
+    # SE UTILIZARON DATOS CREADOS AL MOMENTO DE DISEÑAR LA ETAPA 1 PARA CORROBORAR SU CORRECTO FUNCIONAMIENTO, YA QUE EN ESE MOMENTO NO ESTABAN LISTAS LAS DEMAS ETAPAS
+
     # ----------------------------------------------------------- # 
     
     run_match(words_dict, words, random_letters)
-    # ACA VA LA ETAPA 5
 
 #main_etapa1()
 
