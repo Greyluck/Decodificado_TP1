@@ -77,10 +77,5 @@ def main_etapa2():
     
 #main_etapa2()
 
-#TODO:
-# Este es el codigo que imprime
-# "Los numeros de palabras por letra son:  {'a': 47, 'b': 26, 'c': 45, 'd': 43, 'e': 91, 'f': 77, 'g': 62, 'h': 74, 'i': 78, 'j': 49, 'k': 24, 'l': 69, 'm': 66, 'n': 64, 'ñ': 1, 'o': 57, 'p': 70, 'q': 23, 'r': 73, 's': 80, 't': 68, 'u': 60, 'v': 72, 'w': 5, 'x': 7, 'y': 41, 'z': 14} y el total es:  1386"
-# El total deberia tener 8 palabras mas (1394)
-
 
 

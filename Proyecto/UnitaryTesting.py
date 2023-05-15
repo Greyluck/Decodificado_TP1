@@ -35,11 +35,13 @@ words_dict= {"Arbol":"Descripcion generica 1",
             "Intemperie":"Descripcion generica 9",
             "Jardin":"Descripcion generica 10",}
 def print_board ():
+    # Se agrego blank line para que coincida con la forma mostrada en el PDF. 
+    # Doctest revisa las lineas vacias usando ese formato
     """
     >>> Etapa1.print_board(letters_in_board, results_in_board, success, mistake, letters_list, turns, words, words_dict)
     [A][B][C][E][D][E][F][G][H][I]
     [][][][][][][][][][]
-    -------------------------------
+    <BLANKLINE>
     Aciertos: 1
     Errores: 2
     Turno letra A - Palabra de 5 letras
