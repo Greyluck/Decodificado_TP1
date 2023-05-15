@@ -30,7 +30,7 @@ def return_random_letters(letras):
     resultado.sort()
     return resultado
 
-def generate_rosco(diccionario,letras):
+def generate_rosco(diccionary,letras):
     '''
     ESTA FUNCION RECIBE DICCIONARIO DE PALABRA: DEFINICION y la lista del total de letras del rosco.
     Devuelve una lista ordenada alfabeticamente con las palabras elegidas
@@ -38,13 +38,13 @@ def generate_rosco(diccionario,letras):
     resultado = []
 
     # OBTENER PALABRAS DEL DICCIONARIO y ORDENARLAS ALFABETICAMENTE (se asume que no estan ordenadas)
-    palabras_utilizables = [ key for key in diccionario if key[0] in letras or key[0] in ('á','é','í','ó','ú')]
+    palabras_utilizables = [ key for key in diccionary if key[0] in letras or key[0] in ('á','é','í','ó','ú')]
     palabras_utilizables.sort()
     for letra in letras:
         # SI LA LETRA ES VOCAL, AGREGAR PALABRAS QUE INICIAN EN ACENTO
         palabras_letra = []
         if letra in ('a','e','i','o','u'):
-            palabras_letra = ObtenerPalabrasAcentuadas(letra,palabras_utilizables)
+            palabras_letra = obtain_words_with_accents(letra,palabras_utilizables)
         
         # ENCONTRAR PRIMER APARICION DE LETRA Y AGREGAR A LISTA TODAS LAS PALABRAS QUE INICIEN CON ESA LETRA
         i = 0
@@ -55,17 +55,22 @@ def generate_rosco(diccionario,letras):
             palabras_letra.append(palabras_utilizables[i])
             i += 1
     
+        # ----------------------------------------------------------------------------------------------------
+        # TODO: En esta seccion hay un error que aparece solo en una de las pcs donde se ejecuta (PC de Emilio)
+        # Se debe revisar este error para entender como manejarlo.
+        # print("ACA!")
+        # print(palabras_letra)
+        # print(0,len(palabras_letra) - 1)
+        # print(random.randint(0,len(palabras_letra) - 1))
+        # print(palabras_letra[random.randint(0,len(palabras_letra) - 1)])
+        # print(resultado.append(palabras_letra[random.randint(0,len(palabras_letra) - 1)]))
+        # ----------------------------------------------------------------------------------------------------
+
         # TIRAR DADO PARA ELEGIR PALABRA PARA LA LETRA
-        print("ACA!")
-        print(palabras_letra)
-        print(0,len(palabras_letra) - 1)
-        print(random.randint(0,len(palabras_letra) - 1))
-        print(palabras_letra[random.randint(0,len(palabras_letra) - 1)])
-        print(resultado.append(palabras_letra[random.randint(0,len(palabras_letra) - 1)]))
         resultado.append(palabras_letra[random.randint(0,len(palabras_letra) - 1)])
     return resultado
 
-def ObtenerPalabrasAcentuadas(letra,palabras):
+def obtain_words_with_accents(letra,palabras):
     '''
     Si la letra es una vocal, esta funcion devuelve todas las palabras que inician con dicha vocal acentuada
     '''
@@ -90,13 +95,13 @@ def ObtenerPalabrasAcentuadas(letra,palabras):
     return resultado
 
 def main_etapa3():
-    diccionario = return_short_words(obtener_lista_definiciones())
+    diccionary = return_short_words(obtener_lista_definiciones())
     
     # TEST DE CONSIGA
     for i in range(1,101):
         print("Intento numero:",i)
         letras = return_random_letters(Etapa2.ALPHABET)
-        rosco = generate_rosco(diccionario, letras)
+        rosco = generate_rosco(diccionary, letras)
         for ii in range(len(rosco)):
             print("LETRA:",letras[ii],"| PALABRA:",rosco[ii])
 

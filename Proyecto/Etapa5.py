@@ -24,9 +24,10 @@ def play_match():
         if play_again != 'ok':
             decision = False
             
-def main():
+def main_etapa5():
     """ 
     ejecuta el juego
     """
     play_match()
-main()
+
+#main_etapa5()

@@ -18,7 +18,7 @@ def print_board(letters_in_board, results_in_board, success, mistake, letters_li
     Esta funcion recibe como parametros los datos necesarios para poder
     imprimir el tablero que muestra los detalles de la partida en cada turno
     '''
-    print('{}\n{}\n\nAciertos: {}\nErrores: {}\nTurno letra {} - Palabra de {} letras\nDefinicion: {}'.format(
+    print('{}\n{}\n-------------------------------\nAciertos: {}\nErrores: {}\nTurno letra {} - Palabra de {} letras\nDefinicion: {}'.format(
         letters_in_board, results_in_board, success, mistake, letters_list[turns][1], len(words[turns]), words_dict[words[turns]]))
 
 def ask_for_word():

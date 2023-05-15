@@ -75,7 +75,7 @@ def main_etapa2():
     quantity, total= return_quantity(short_word_dicc) #return_quantity devuelve cantidad y total
     print("Los numeros de palabras por letra son: ", quantity, "y el total es: ", total)
     
-main_etapa2()
+#main_etapa2()
 
 #TODO:
 # Este es el codigo que imprime

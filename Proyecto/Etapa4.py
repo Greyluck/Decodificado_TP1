@@ -44,4 +44,4 @@ def generate_diccionary():
     short_word_dicc = Etapa2.return_short_words(main_list)
     return short_word_dicc
 
-main_etapa4()
+#main_etapa4()
