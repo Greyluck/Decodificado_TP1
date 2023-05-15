@@ -31,7 +31,7 @@ def return_random_letters(letters):
     result.sort()
     return result
 
-def generate_rosco(diccionary,letras):
+def generate_rosco(dictionary,letters):
     '''
     ESTA FUNCION RECIBE DICCIONARIO DE PALABRA: DEFINICION y la lista del total de letras del rosco.
     Devuelve una lista ordenada alfabeticamente con las palabras elegidas
@@ -46,7 +46,7 @@ def generate_rosco(diccionary,letras):
         # SI LA LETRA ES VOCAL, AGREGAR PALABRAS QUE INICIAN EN ACENTO
         words_that_start_with_letter = []
         if letter in ('a','e','i','o','u'):
-            words_that_start_with_letter = obtain_words_with_accent(letter,words_for_use)
+            words_that_start_with_letter = obtain_words_with_accents(letter,words_for_use)
         
         # ENCONTRAR PRIMER APARICION DE LETRA Y AGREGAR A LISTA TODAS LAS PALABRAS QUE INICIEN CON ESA LETRA
         i = 0
@@ -72,7 +72,7 @@ def generate_rosco(diccionary,letras):
         result.append(words_that_start_with_letter[random.randint(0,len(words_that_start_with_letter) - 1)])
     return result
 
-def obtain_words_with_accents(letra,palabras):
+def obtain_words_with_accents(letter,words):
     '''
     Si la letra es una vocal, esta funcion devuelve todas las palabras que inician con dicha vocal acentuada
     '''
@@ -97,15 +97,15 @@ def obtain_words_with_accents(letra,palabras):
     return result
 
 def main_etapa3():
-    diccionary = return_short_words(obtener_lista_definiciones())
+    dictionary = return_short_words(obtener_lista_definiciones())
     
     # TEST DE CONSIGA
-    CANT_ITERACIONES = 100
-    for i in range(0,CANT_ITERACIONES):
+    AMOUNT_ITERATIONS = 100
+    for i in range(0,AMOUNT_ITERATIONS):
         print("Intento numero:",i + 1)
-        letras = return_random_letters(Etapa2.ALPHABET)
-        rosco = generate_rosco(diccionary, letras)
+        letters = return_random_letters(Etapa2.ALPHABET)
+        rosco = generate_rosco(dictionary, letters)
         for ii in range(len(rosco)):
-            print("LETRA:",letras[ii],"| PALABRA:",rosco[ii])
+            print("LETRA:",letters[ii],"| PALABRA:",rosco[ii])
 
-#main_etapa3()
+main_etapa3()
