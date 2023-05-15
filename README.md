@@ -1,4 +1,4 @@
-ntro:
+Intro:
 ---
 En este directorio se encuentran 2 carpetas. 
  - **Documentacion:** Aca se encuentra la informacion utilizada para realizar el proyecto. 
