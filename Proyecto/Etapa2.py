@@ -6,7 +6,6 @@ from datos import obtener_lista_definiciones
 import doctest
 
 ALPHABET = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","v","w","x","y","z"]
-ALPHABET_WITH_ACCENT = ["a","á","b","c","d","e","é","f","g","h","i","í","j","k","l","m","n","ñ","o","ó","p","q","r","s","t","u","ú","v","w","x","y","z"]
 
 def return_short_words(main_list):
     """
@@ -46,6 +45,9 @@ def return_quantity(short_word_dicc):
 
         if letter=="a":
             out_dicc_just_letter["a"]+=words_list.count("á")
+        
+        if letter=="e":
+            out_dicc_just_letter["a"]+=words_list.count("é")
 
         elif letter=="i":
             out_dicc_just_letter["i"]+=words_list.count("í")            
