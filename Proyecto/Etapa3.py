@@ -8,53 +8,55 @@ import random
 
 import Etapa2
 
-def return_random_letters(letras):
+def return_random_letters(letters):
     '''
-    Esta funcion recibe la lista de letras y te devuelve otra lista de 10 letras elegidas aleatoriamente 
+    Esta funcion recibe la lista de letras y te devuelve otra lista de 10 letras elegidas pseudo-aleatoriamente (ignorar el pseudo en la 
+    expresion anterior) 
     La lista esta ordenada alfabeticamente
     '''
     
-    resultado = []
-    LETTER_QUANTITY = 10
+    result = []
+    AMOUNT_OF_LETTERS = 10
 
-    for i in range (LETTER_QUANTITY):
-        elemento_encontrado = False
-        elemento = ''
-        while not elemento_encontrado:
-            elemento = letras[random.randint(0,len(letras) - 1)]
-            if not elemento in resultado:
-                elemento_encontrado = True
+    for i in range (AMOUNT_OF_LETTERS):
+        found_letter = False
+        letter = ''
+        while not found_letter:
+            letter = letters[random.randint(0,len(letters) - 1)]
+            if not letter in result:
+                found_letter = True
 
-        resultado.append(elemento)
+        result.append(letter)
     
-    resultado.sort()
-    return resultado
+    result.sort()
+    return result
 
 def generate_rosco(diccionary,letras):
     '''
     ESTA FUNCION RECIBE DICCIONARIO DE PALABRA: DEFINICION y la lista del total de letras del rosco.
     Devuelve una lista ordenada alfabeticamente con las palabras elegidas
     '''
-    resultado = []
+    result = []
 
     # OBTENER PALABRAS DEL DICCIONARIO y ORDENARLAS ALFABETICAMENTE (se asume que no estan ordenadas)
-    palabras_utilizables = [ key for key in diccionary if key[0] in letras or key[0] in ('á','é','í','ó','ú')]
-    palabras_utilizables.sort()
-    for letra in letras:
+    words_for_use = [ key for key in dictionary if key[0] in letters or key[0] in ('á','é','í','ó','ú')]
+    words_for_use.sort()
+
+    for letter in letters:
         # SI LA LETRA ES VOCAL, AGREGAR PALABRAS QUE INICIAN EN ACENTO
-        palabras_letra = []
-        if letra in ('a','e','i','o','u'):
-            palabras_letra = obtain_words_with_accents(letra,palabras_utilizables)
+        words_that_start_with_letter = []
+        if letter in ('a','e','i','o','u'):
+            words_that_start_with_letter = obtain_words_with_accent(letter,words_for_use)
         
         # ENCONTRAR PRIMER APARICION DE LETRA Y AGREGAR A LISTA TODAS LAS PALABRAS QUE INICIEN CON ESA LETRA
         i = 0
-        while palabras_utilizables[i][0] != letra:
+        while not words_for_use[i][0] is letter:
             i += 1
 
-        while palabras_utilizables[i][0] is letra:
-            palabras_letra.append(palabras_utilizables[i])
+        while words_for_use[i][0] is letter:
+            words_that_start_with_letter.append(words_for_use[i])
             i += 1
-    
+
         # ----------------------------------------------------------------------------------------------------
         # TODO: En esta seccion hay un error que aparece solo en una de las pcs donde se ejecuta (PC de Emilio)
         # Se debe revisar este error para entender como manejarlo.
@@ -67,39 +69,40 @@ def generate_rosco(diccionary,letras):
         # ----------------------------------------------------------------------------------------------------
 
         # TIRAR DADO PARA ELEGIR PALABRA PARA LA LETRA
-        resultado.append(palabras_letra[random.randint(0,len(palabras_letra) - 1)])
-    return resultado
+        result.append(words_that_start_with_letter[random.randint(0,len(words_that_start_with_letter) - 1)])
+    return result
 
 def obtain_words_with_accents(letra,palabras):
     '''
     Si la letra es una vocal, esta funcion devuelve todas las palabras que inician con dicha vocal acentuada
     '''
     # INICIAMOS LA BUSQUEDA DESDE EL FINAL DEBIDO A QUE sort() DEJA PALABRAS CON INICIO ACENTUADO AL FINAL DE LA LISTA
-    resultado = []
+    result = []
 
-    i = len(palabras) - 1
-    while palabras[i][0] in ('á','é','í','ó','ú'):
-        if letra == 'a' and palabras[i][0] == 'á':
-            resultado.append(palabras[i])
-        elif letra == 'e' and palabras[i][0] == 'é':
-            resultado.append(palabras[i])
-        elif letra == 'i' and palabras[i][0] == 'í':
-            resultado.append(palabras[i])
-        elif letra == 'o' and palabras[i][0] == 'ó':
-            resultado.append(palabras[i])
-        elif letra == 'u' and palabras[i][0] == 'ú':
-            resultado.append(palabras[i])
+    i = len(words) - 1
+    while words[i][0] in ('á','é','í','ó','ú'):
+        if letter == 'a' and words[i][0] == 'á':
+            result.append(words[i])
+        elif letter == 'e' and words[i][0] == 'é':
+            result.append(words[i])
+        elif letter == 'i' and words[i][0] == 'í':
+            result.append(words[i])
+        elif letter == 'o' and words[i][0] == 'ó':
+            result.append(words[i])
+        elif letter == 'u' and words[i][0] == 'ú':
+            result.append(words[i])
 
         i -= 1
 
-    return resultado
+    return result
 
 def main_etapa3():
     diccionary = return_short_words(obtener_lista_definiciones())
     
     # TEST DE CONSIGA
-    for i in range(1,101):
-        print("Intento numero:",i)
+    CANT_ITERACIONES = 100
+    for i in range(0,CANT_ITERACIONES):
+        print("Intento numero:",i + 1)
         letras = return_random_letters(Etapa2.ALPHABET)
         rosco = generate_rosco(diccionary, letras)
         for ii in range(len(rosco)):
