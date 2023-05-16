@@ -29,6 +29,21 @@ def return_random_letters(letters):
         result.append(letter)
     
     result.sort()
+
+    
+    # Ultimo edit, para que la letra ñ no quede al final
+    aux = []
+    position_found = False
+    if 'ñ' in result:
+        # Iteramos hasta en anteúltimo elemento, debido a que el método sort ubica a la ñ en la última posición
+        for i in range (len(result) - 1):
+            if result[i] > 'n' and not position_found:
+                aux.append('ñ')
+                position_found = True
+            aux.append(result[i])
+
+        result = aux
+                
     return result
 
 def generate_rosco(dictionary,letters):
