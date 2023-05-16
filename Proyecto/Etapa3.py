@@ -30,19 +30,9 @@ def return_random_letters(letters):
     
     result.sort()
 
-    
     # Ultimo edit, para que la letra ñ no quede al final
-    aux = []
-    position_found = False
     if 'ñ' in result:
-        # Iteramos hasta en anteúltimo elemento, debido a que el método sort ubica a la ñ en la última posición
-        for i in range (len(result) - 1):
-            if result[i] > 'n' and not position_found:
-                aux.append('ñ')
-                position_found = True
-            aux.append(result[i])
-
-        result = aux
+        result = correct_ñ_position(result)    
                 
     return result
 
@@ -110,6 +100,27 @@ def obtain_words_with_accents(letter,words):
         i -= 1
 
     return result
+
+def correct_ñ_position(letters):
+    '''
+    Explicación:
+    Recibe una lista de letras ordenada por sort() y devuelve la misma lista pero con la ñ en la posición correcta para nuestro idioma.
+    Procedimiento:
+    Copia los elementos en una nueva lista hasta llegar a n o mayor, incluye la ñ y copia los elementos restantes sin incluir nuevamente la ñ.
+    '''
+    
+    result = []
+    position_found = False
+    if 'ñ' in letters:
+        # Iteramos hasta en anteúltimo elemento (la ñ es el último)
+        for i in range (len(letters) - 1):
+            if letters[i] > 'n' and not position_found:
+                result.append('ñ')
+                position_found = True
+            result.append(letters[i])
+
+    return result
+
 
 def main_etapa3():
     dictionary = return_short_words(obtener_lista_definiciones())
