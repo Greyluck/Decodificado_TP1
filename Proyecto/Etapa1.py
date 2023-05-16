@@ -8,15 +8,16 @@ import string
 def show_letterboard(random_letters): 
     '''
     Esta funcion recibe como parametro la lista de 10 letras seleccionadas al azar (rosco) y se encarga
-    de generar el tablero que muesta las letras: [A] [B] [C] ...
+    de generar el tablero que muesta las letras. Ej: [A] [B] [C] ...
     '''
     letters_list = [f'[{n.upper()}]' for n in random_letters]
     return letters_list
 
 def print_board(letters_in_board, results_in_board, success, mistake, letters_list, turns, words, words_dict):
     '''
-    Esta funcion recibe como parametros los datos necesarios para poder
-    imprimir el tablero que muestra los detalles de la partida en cada turno
+    Esta funcion recibe como parametros los datos que se imprimen en el tablero (letras y cuadros de aciertos/errores), enteros que representan
+    la cantidad de dichos aciertos y errores, la lista de letras, el numero de turno actual, la lista de palabras y el diccionario palabras|definiciones,
+    los cuales utiliza para imprimir el tablero que muestra los detalles de la partida en cada turno
     '''
     print('{}\n{}\n\nAciertos: {}\nErrores: {}\nTurno letra {} - Palabra de {} letras\nDefinicion: {}'.format(
         letters_in_board, results_in_board, success, mistake, letters_list[turns][1], len(words[turns]), words_dict[words[turns]]))
@@ -42,8 +43,9 @@ def validate_lenght_and_grammar(string, lenght):
 
 def add_answer(word, actual_letter, correct_word, resultboard, turns_description_list, turns, success, mistake): 
     '''
-    Esta funcion recibe como parametros los datos necesarios para guardar el resultado de cada turno
-    (acierto/error) con el fin de imprimirlos al final de la partida
+    Esta funcion recibe como parametros la palabra y la letra del turno actual, la palabra correcta, la lista de aciertos/errores,
+    la lista de resultados de cada turno, el numero de turno actual y la cantidad de aciertos y errores hasta el momento.
+    Se encarga de guardar el resultado de cada turno (acierto/error) con el fin de imprimirlos al final de la partida
     '''
     if word == correct_word:
         resultboard[turns] = '[a]'
@@ -63,7 +65,7 @@ def run_match(words_dict, words, random_letters):
     '''
     Esta funcion recibe como parametros el diccionario de palabras|definiciones,
     la lista de palabras a usar y las letras aleatorias.
-    Se encarga de generar el desarrollo de la partida.
+    Se encarga de generar el desarrollo de la partida, dando uso a la funciones antes definidas.
     (Es la funcion principal de la Etapa 1)
     '''
     letters_list = show_letterboard(random_letters) # MUESTRA EL TABLERO DE LETRAS ELEGIDAS AL AZAR
