@@ -44,9 +44,11 @@ def generate_rosco(dictionary,letters):
     result = []
 
     # OBTENER PALABRAS DEL DICCIONARIO y ORDENARLAS ALFABETICAMENTE (se asume que no estan ordenadas)
-    words_for_use = [ key for key in dictionary if key[0] in letters or key[0] in ('á','é','í','ó','ú')]
+    words_for_use = []
+    for key in dictionary.keys():
+            if key[0] in letters or key[0] in ('á','é','í','ó','ú'):
+                words_for_use.append(key)
     words_for_use.sort()
-
     for letter in letters:
         # SI LA LETRA ES VOCAL, AGREGAR PALABRAS QUE INICIAN EN ACENTO
         words_that_start_with_letter = []
@@ -55,10 +57,10 @@ def generate_rosco(dictionary,letters):
         
         # ENCONTRAR PRIMER APARICION DE LETRA Y AGREGAR A LISTA TODAS LAS PALABRAS QUE INICIEN CON ESA LETRA
         i = 0
-        while not words_for_use[i][0] is letter:
+        while (i < len(words_for_use)) and (words_for_use[i][0] != letter):
             i += 1
 
-        while words_for_use[i][0] is letter:
+        while (i < len(words_for_use)) and (words_for_use[i][0] == letter):
             words_that_start_with_letter.append(words_for_use[i])
             i += 1
 
@@ -74,7 +76,16 @@ def generate_rosco(dictionary,letters):
         # ----------------------------------------------------------------------------------------------------
 
         # TIRAR DADO PARA ELEGIR PALABRA PARA LA LETRA
-        result.append(words_that_start_with_letter[random.randint(0,len(words_that_start_with_letter) - 1)])
+        '''
+        if len(words_that_start_with_letter) > 5:
+            random_index = random.randint(0,len(words_that_start_with_letter) - 1)
+            result.append(words_that_start_with_letter[random_index])
+        else:
+            print("NO DA EL LARGO DE PALABRAS")
+        '''
+        random_index = random.randint(0,len(words_that_start_with_letter) - 1)
+        result.append(words_that_start_with_letter[random_index])
+
     return result
 
 def obtain_words_with_accents(letter,words):
@@ -134,4 +145,4 @@ def main_etapa3():
         for ii in range(len(rosco)):
             print("LETRA:",letters[ii],"| PALABRA:",rosco[ii])
 
-main_etapa3()
+#main_etapa3()
