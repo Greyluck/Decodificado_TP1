@@ -8,6 +8,8 @@ import random
 
 import Etapa2
 
+DEBUG_MODE = True
+
 def return_random_letters(letters):
     '''
     Esta funcion recibe la lista de letras y te devuelve otra lista de 10 letras elegidas pseudo-aleatoriamente (ignorar el pseudo en la 
@@ -137,12 +139,13 @@ def main_etapa3():
     dictionary = return_short_words(obtener_lista_definiciones())
     
     # TEST DE CONSIGA
-    AMOUNT_ITERATIONS = 100
-    for i in range(0,AMOUNT_ITERATIONS):
-        print("Intento numero:",i + 1)
-        letters = return_random_letters(Etapa2.ALPHABET)
-        rosco = generate_rosco(dictionary, letters)
-        for ii in range(len(rosco)):
-            print("LETRA:",letters[ii],"| PALABRA:",rosco[ii])
+    if DEBUG_MODE:
+        AMOUNT_ITERATIONS = 100
+        for i in range(0,AMOUNT_ITERATIONS):
+            print("Intento numero:",i + 1)
+            letters = return_random_letters(Etapa2.ALPHABET)
+            rosco = generate_rosco(dictionary, letters)
+            for ii in range(len(rosco)):
+                print("LETRA:",letters[ii],"| PALABRA:",rosco[ii])
 
 #main_etapa3()
