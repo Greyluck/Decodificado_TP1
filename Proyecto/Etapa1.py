@@ -66,6 +66,8 @@ def run_match(words_dict, words, random_letters):
     Esta funcion recibe como parametros el diccionario de palabras|definiciones,
     la lista de palabras a usar y las letras aleatorias.
     Se encarga de generar el desarrollo de la partida, dando uso a la funciones antes definidas.
+    Retorna la tupla results que contiene la cantidad de aciertos y error que posteriormente es
+    utilizada en la Etapa 5 para calcular los puntajes.
     (Es la funcion principal de la Etapa 1)
     '''
     letters_list = show_letterboard(random_letters) # MUESTRA EL TABLERO DE LETRAS ELEGIDAS AL AZAR
