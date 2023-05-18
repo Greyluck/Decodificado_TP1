@@ -96,14 +96,14 @@ def main_etapa1():
     ejecuta todo lo necesario para poner el juego en funcionamiento de una manera ordenada
     '''
     # ----------------------------------------------------------- # 
-    # ACA SE USA LA FUNCION QUE GENERARIA EL DICCIONARIO (EN LA ETAPA 2)
-    words_dict = {n:f'{n}definicion' for n in string.ascii_lowercase}
-
-    # ACA SE USA LA FUNCION QUE GENERARIA LA LISTA DE 10 PALABRAS (EN LA ETAPA 3)
-    words = [n for n in string.ascii_lowercase[:10]]  
-
     # ACA SE USA LA FUNCION QUE GENERARIA LA LISTA DE LETRAS RANDOM (EN LA ETAPA 3)
     random_letters = ['a','b','c','e','f','g','h','i','t','z']  
+
+    # ACA SE USA LA FUNCION QUE GENERARIA LA LISTA DE 10 PALABRAS (EN LA ETAPA 3)
+    words = [n for n in random_letters]  
+
+    # ACA SE USA LA FUNCION QUE GENERARIA EL DICCIONARIO (EN LA ETAPA 2)
+    words_dict = {n:f'{n}definicion' for n in random_letters}
 
     # SE UTILIZARON DATOS CREADOS AL MOMENTO DE DISEÑAR LA ETAPA 1 PARA CORROBORAR SU CORRECTO FUNCIONAMIENTO, YA QUE EN ESE MOMENTO NO ESTABAN LISTAS LAS DEMAS ETAPAS
 
