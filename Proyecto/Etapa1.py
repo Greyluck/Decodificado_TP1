@@ -3,8 +3,6 @@
 # El responsable de su revision es Valentino Ceniceros.
 # (Esta seccion fue revisada adicionalmente por Emilio Ontiveros.)
 
-import string 
-
 def show_letterboard(random_letters): 
     '''
     Esta funcion recibe como parametro la lista de 10 letras seleccionadas al azar (rosco) y se encarga
@@ -66,10 +64,10 @@ def run_match(words_dict, words, random_letters):
     Esta funcion recibe como parametros el diccionario de palabras|definiciones,
     la lista de palabras a usar y las letras aleatorias.
     Se encarga de generar el desarrollo de la partida, dando uso a la funciones antes definidas.
-    Retorna la tupla results que contiene la cantidad de aciertos y error que posteriormente es
+    Retorna la tupla results que contiene la cantidad de aciertos y errores que posteriormente es
     utilizada en la Etapa 5 para calcular los puntajes.
     (Es la funcion principal de la Etapa 1)
-    '''
+    ''' 
     letters_list = show_letterboard(random_letters) # MUESTRA EL TABLERO DE LETRAS ELEGIDAS AL AZAR
     turns_per_match = len(letters_list) 
     resultboard = ['[ ]' for n in range(turns_per_match)] # CREA EL TABLERO DE RESULTADOS
@@ -77,7 +75,7 @@ def run_match(words_dict, words, random_letters):
     success = 0 # CONTADOR DE ACIERTOS
     mistake = 0 # CONTADOR DE ERRORES
     turns_description_list = []
-    while turns < turns_per_match:
+    for turns in range(turns_per_match): # Tambien se podria utilizar while turns < turns_per_match:
         letters_in_board = ''.join(letters_list)
         results_in_board = ''.join(resultboard)
         print_board(letters_in_board, results_in_board, success, mistake, letters_list, turns, words, words_dict)
