@@ -58,4 +58,4 @@ def main_etapa3():
     generate_rosco(dictionary,selected_letters)
     
 
-main_etapa3()
+#main_etapa3()

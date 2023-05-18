@@ -81,7 +81,6 @@ def run_match(words_dict, words, random_letters):
         print_board(letters_in_board, results_in_board, success, mistake, letters_list, turns, words, words_dict)
         word = validate_lenght_and_grammar(ask_for_word(), len(words[turns])) # VERIFICA LA PALABRA DEPENDIENDO DEL LARGO DE LA PALABRA EN EL TURNO ACTUAL
         success, mistake = add_answer(word, letters_list[turns][1], words[turns], resultboard, turns_description_list, turns, success, mistake)
-        turns += 1
     letters_in_board = ''.join(letters_list)
     results_in_board = ''.join(resultboard)
     print(f'{letters_in_board}\n{results_in_board}\n\nAciertos: {success}\nErrores: {mistake}') # IMPRIME EL FINAL DE LA PARTIDA ACTUAL
