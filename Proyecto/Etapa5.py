@@ -6,7 +6,7 @@ import Etapa4
 
 def acumulate_points(results,SUCCESS_POINTS = 10, FAIL_POINTS = -3):
     """
-    Eecibe una tupla con aciertos y errores y devuelve el puntaje total del juego como entero
+    Recibe una tupla con aciertos y errores y devuelve el puntaje total del juego como entero
     """
     SUCCESS_INDEX = 0
     FAIL_INDEX = 1
