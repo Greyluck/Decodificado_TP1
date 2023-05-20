@@ -1,0 +1,23 @@
+Documentacion interna para los integrantes del equipo.
+
+Se decididio lo siguiente:
+ - Utilizaremos SnakeCase y se seguira el PEP para a las nomenclaturas.
+ - Utilizaremos VsCode como IDLE.
+ - Las descripciones de metodos, los comentarios, y prints seran en castellano.
+ - Nombre de funciones, y todo aquello no especificado en este doc, ira en ingles.
+ - El proyecto tendra la siguiente estructura (ver estructura)
+
+Estructura:
+	- El proyecto sera una carpeta en git con 2 carpetas internas.
+	- Una carpeta de proyecto
+	- Una carpeta para la documentacion.
+
+La lista de etapas
+	Etapa N - Nombre de etapa: 	Creador   | Verificador
+	Etapa 1 - Interacción: 		Lucas	  | Valentino
+	Etapa 2 - Diccionario: 		Tomy 	  | Lucas
+	Etapa 3 - Rosco: 		Santi 	  | Tomy
+	Etapa 4 - Integracion: 		Emilio	  | Santi
+	Etapa 5 - Puntaje: 		Valentino | Emilio
+
+	NOTA: Todas las etapas seran re-validadas por todos los integrantes de equipo.
