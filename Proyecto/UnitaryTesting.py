@@ -10,14 +10,7 @@ import Etapa5
 
 import doctest
 
-#-----------------------------------------------------------------------------------------------------------------------
-def show_letterboard():
-    """
-    >>> Etapa1.show_letterboard(["a","b","c","d","e","f","g","h","i","j"])
-    ['[A]', '[B]', '[C]', '[D]', '[E]', '[F]', '[G]', '[H]', '[I]', '[J]']
-    """
-
-#-----------------------------------------------------------------------------------------------------------------------
+# Variables necesarias para test 1 y 2
 letters_in_board = '[A][B][C][E][D][E][F][G][H][I]'
 results_in_board = '[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]'
 success = 0
@@ -35,10 +28,32 @@ words_dict= {"Árbol":"Descripcion generica 1",
             "Higo":"Descripcion generica 8",
             "Intemperie":"Descripcion generica 9",
             "Jardin":"Descripcion generica 10",}
+turns_description_list = ["Descripcion"]
+# Solo para test 2
+actual_letter = "Á"
+correct_word = "Árbol"
+resultboard = ["b"]
+success2 = 9 # Variable agregada para probar un segundo caso
 
-def print_board():
-    # Se agrego blank line para que coincida con la forma mostrada en el PDF. 
-    # Doctest revisa las lineas vacias usando ese formato
+# TEST1 -----------------------------------------------------------------------------------------------------------------------
+def show_letterboard_test_1():
+    """
+    Verifica que al enviar una lista de 10 letras, cree y muestre el tablero
+
+    de generar el tablero que muesta las letras. Ej: [A] [B] [C] ...
+    >>> Etapa1.show_letterboard(["a","b","c","d","e","f","g","h","i","j"])
+    ['[A]', '[B]', '[C]', '[D]', '[E]', '[F]', '[G]', '[H]', '[I]', '[J]']
+
+    >>> Etapa1.show_letterboard(["a","b","c","d","e","f","g","h","i","F"])
+    ['[A]', '[B]', '[C]', '[D]', '[E]', '[F]', '[G]', '[H]', '[I]', '[F]']
+
+    >>> Etapa1.show_letterboard(["a","b","c","d","e","f","g","h","i","Ñ"])
+    ['[A]', '[B]', '[C]', '[D]', '[E]', '[F]', '[G]', '[H]', '[I]', '[Ñ]']
+    """
+
+# TEST2 -----------------------------------------------------------------------------------------------------------------------
+def print_board_test_2():
+    # Ejecucion del caso de prueba
     """
     >>> Etapa1.print_board(letters_in_board, results_in_board, success, mistake, letters_list, turns, words, words_dict)
     [A][B][C][E][D][E][F][G][H][I]
@@ -48,22 +63,30 @@ def print_board():
     Errores: 0
     Turno letra A - Palabra de 5 letras
     Definicion: Descripcion generica 1
+
+    >>> Etapa1.print_board(letters_in_board, results_in_board, success2, mistake, letters_list, turns, words, words_dict)
+    [A][B][C][E][D][E][F][G][H][I]
+    [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
+    <BLANKLINE>
+    Aciertos: 9
+    Errores: 0
+    Turno letra A - Palabra de 5 letras
+    Definicion: Descripcion generica 1
     """
-
-#-----------------------------------------------------------------------------------------------------------------------
-
+ 
+    
+# TEST3 -----------------------------------------------------------------------------------------------------------------------
 def validate_lenght_and_grammar():
     """
     >>> Etapa1.validate_lenght_and_grammar("Palabra", 7)
     'Palabra'
+    >>> Etapa1.validate_lenght_and_grammar("Palabras", 8)
+    'Palabras'
+    >>> Etapa1.validate_lenght_and_grammar("Palabrerio", 10)
+    'Palabrerio'
     """
-
-
-#-----------------------------------------------------------------------------------------------------------------------
-actual_letter = "Á"
-correct_word = "Árbol"
-resultboard = ["b"]
-turns_description_list = ["Descripcion"]
+    
+# TEST4 -----------------------------------------------------------------------------------------------------------------------
 def add_answer():
     """
     >>> Etapa1.add_answer("Árbol", actual_letter, correct_word, resultboard, turns_description_list, turns, success, mistake)
@@ -77,17 +100,26 @@ def add_answer():
     (0, 1)
     """
 
-# TODO: Las pruebas unitarias no son completamente "Unitarias", ya que dependen del orden en el que son ejecutadas.
-# Para corregir esto se requiere implementar las variables dentro de las funciones. 
-# Eso sera agregado mas adelante. 
-
+# TEST5 -----------------------------------------------------------------------------------------------------------------------
+def return_quantity_test_5():
+    list = ["alegria","prisma","generico","otro"]
+    list2 = ["alegria","prisma","generico","otro","adicionar"]
+    """    
+    >>> Etapa2.return_quantity(list)
+    {'a': 1, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 1, 'h': 0, 'i': 0, 'j': 0, 'k': 0, 'l': 0, 'm': 0, 'n': 0, 'ñ': 0, 'o': 1, 'p': 1, 'q': 0, 'r': 0, 's': 0, 't': 0, 'u': 0, 'v': 0, 'w': 0, 'x': 0, 'y': 0, 'z': 0}, 4
+    
+    >>> Etapa2.return_quantity(list2)
+    {'a': 2, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 1, 'h': 0, 'i': 0, 'j': 0, 'k': 0, 'l': 0, 'm': 0, 'n': 0, 'ñ': 0, 'o': 1, 'p': 1, 'q': 0, 'r': 0, 's': 0, 't': 0, 'u': 0, 'v': 0, 'w': 0, 'x': 0, 'y': 0, 'z': 0}, 5
+    """
+    
 print (doctest.testmod())
 
 
+
 # #---------------------------------------------------------
-# Etapa1.show_letterboard(random_letters)                                                                               --> Verificado
-# Etapa1.print_board(letters_in_board, results_in_board, success, mistake, letters_list, turns, words, words_dict)      --> Verificado
-# Etapa1.ask_for_word()                                                                                                 --> Ignorado
+# Etapa1.show_letterboard(random_letters)                                                                               --> Verificado  TEST1
+# Etapa1.print_board(letters_in_board, results_in_board, success, mistake, letters_list, turns, words, words_dict)      --> Verificado  TEST2
+# Etapa1.ask_for_word()                                                                                                 
 # Etapa1.validate_lenght_and_grammar(string, lenght)                                                                    --> Verificado
 # Etapa1.add_answer(word, actual_letter, correct_word, resultboard, turns_description_list, turns, success, mistake)    --> Verificado
 # Etapa1.run_match(words_dict, words, random_letters)
@@ -95,7 +127,7 @@ print (doctest.testmod())
 # Etapa1.run_match(words_dict, words, random_letters)
 # #---------------------------------------------------------
 # Etapa2.return_short_words(main_list)
-# Etapa2.return_quantity(short_word_dicc)
+# Etapa2.return_quantity(short_word_dicc)                                                                               --> Verificado
 # Etapa2.main_etapa2()
 # #---------------------------------------------------------
 # Etapa3.return_random_letters(letras)
