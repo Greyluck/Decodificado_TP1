@@ -25,7 +25,7 @@ def ask_for_word():
     Esta funcion se encarga de solicitar el ingreso de la palabra
     a adivinar en cada turno
     '''
-    word = str(input('Ingrese una única palabra, compuesta solo con letras y de la longitud pedida: '))
+    word = str.lower(input('Ingrese una única palabra, compuesta solo con letras y de la longitud pedida: '))
     return word
     
 def validate_lenght_and_grammar(string, lenght): 
