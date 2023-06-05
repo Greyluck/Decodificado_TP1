@@ -3,10 +3,10 @@
 # El responsable de su revision es Tomas Galluccio.
 
 from datos import obtener_lista_definiciones
-from Etapa2 import return_short_words
 import random
 
 import Etapa2
+import Etapa10
 
 DEBUG_MODE = True
 
@@ -18,7 +18,7 @@ def return_random_letters(letters):
     '''
     
     result = []
-    AMOUNT_OF_LETTERS = 10
+    AMOUNT_OF_LETTERS = Etapa10.game_config['LETTERS_ROSCO_QUANTITY']
 
     for i in range (AMOUNT_OF_LETTERS):
         found_letter = False
@@ -136,7 +136,7 @@ def correct_ñ_position(letters):
 
 
 def main_etapa3():
-    dictionary = return_short_words(obtener_lista_definiciones())
+    dictionary = Etapa2.return_short_words(obtener_lista_definiciones())
     
     # TEST DE CONSIGA
     if DEBUG_MODE:

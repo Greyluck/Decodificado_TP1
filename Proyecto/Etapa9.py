@@ -1,7 +1,13 @@
 """Etapa 9: Dinámica del juego"""
 # El responsable de esta etapa es Santiago Testa.
 
-import Etapa10 
+import Etapa1   # TP1 - Interfaz de consola
+import Etapa2   # TP1 - Generacion de diccionario
+import Etapa3   # TP1 - Generacion aleatoria de letras y palabras
+import Etapa7   # TP2 - Llamado de usuarios
+import Etapa10  # TP2 - Configuracion del juego
+
+DEBUG_MODE = True
 
 def show_letterboard(random_letters): 
     '''
@@ -13,7 +19,7 @@ def show_letterboard(random_letters):
     letters_list = [f'[{n.upper()}]' for n in random_letters]
     return letters_list
 
-def print_board(letters_in_board, turns_in_board, results_in_board, success, mistake, letters_list, turns, words, words_dict):
+def print_board(letters_in_board, turns_in_board, results_in_board,success, mistake, letters_list, turns, words, words_dict, players):
     '''
     Edit Santi - Parte 9: Se agrega turnos al tablero, y se modulariza el mostrar los resultados
 
@@ -22,8 +28,11 @@ def print_board(letters_in_board, turns_in_board, results_in_board, success, mis
     los cuales utiliza para imprimir el tablero que muestra los detalles de la partida en cada turno
     '''
     print('{}\n{}\n{}\n\n'.format(letters_in_board, turns_in_board, results_in_board))
+    print_play_result(success, mistake, letters_list, turns, words, words_dict)
+
+def print_play_result(success, mistake, letters_list, turns, words, words_dict, players):
     print('Aciertos: {}\nErrores: {}\nTurno letra {} - Palabra de {} letras\nDefinicion: {}'.format(
-        success, mistake, letters_list[turns][1], len(words[turns]), words_dict[words[turns]]))
+        success[mistake % len(players)], mistake, letters_list[turns][1], len(words[turns]), words_dict[words[turns]]))
 
 def ask_for_word():
     '''
@@ -70,9 +79,9 @@ def add_answer(word, actual_letter, correct_word, resultboard, turnboard, turns_
         print(f'Palabra incorrecta - La respuesta correcta era: {correct_word}\n')
     return success, mistake
     
-def run_match(words_dict, words, random_letters):
+def run_match(words_dict, words, random_letters, players):
     '''
-    Edit Santi - Parte 9: Se
+    Edit Santi - Parte 9: Se 
 
     Esta funcion recibe como parametros el diccionario de palabras|definiciones,
     la lista de palabras a usar y las letras aleatorias.
@@ -81,14 +90,14 @@ def run_match(words_dict, words, random_letters):
     utilizada en la Etapa 5 para calcular los puntajes.
     (Es la funcion principal de la Etapa 1)
     ''' 
-    letters_list = show_letterboard(random_letters) # TABLERO DE LETRAS ELEGIDAS AL AZAR
+    letters_list = Etapa1.show_letterboard(random_letters) # TABLERO DE LETRAS ELEGIDAS AL AZAR
     turns_per_match = len(letters_list) 
     resultboard = ['[ ]' for n in range(turns_per_match)] # CREA EL TABLERO DE RESULTADOS
     turnboard = resultboard
     
     # turns = 0 (comentado porque el for ya lo inicializa) # ITERADOR TANTO DE LAS LETRAS COMO DE LA PALABRA EN EL TURNO ACTUAL
-    success = 0 # CONTADOR DE ACIERTOS
-    mistake = 0 # CONTADOR DE ERRORES
+    success = [0 for player in players] # LISTA DE CONTADORES DE ACIERTOS POR JUGADOR
+    mistake = 0 # CONTADOR DE ERRORES (general de todos, no es necesario distinguirlos)
     turns_description_list = []
     for turns in range(turns_per_match): # Tambien se podria utilizar while turns < turns_per_match:
         letters_in_board = ''.join(letters_list)
@@ -97,7 +106,7 @@ def run_match(words_dict, words, random_letters):
         print_board(letters_in_board, turns_in_board, results_in_board, success, mistake, letters_list, turns, words, words_dict)
 
         # Solicitar palabra y agregar resultado
-        word = validate_lenght_and_grammar(ask_for_word(), len(words[turns])) # VERIFICA LA PALABRA DEPENDIENDO DEL LARGO DE LA PALABRA EN EL TURNO ACTUAL
+        word = Etapa1.validate_lenght_and_grammar(Etapa1.ask_for_word(), len(words[turns])) # VERIFICA LA PALABRA DEPENDIENDO DEL LARGO DE LA PALABRA EN EL TURNO ACTUAL
         success, mistake = add_answer(word, letters_list[turns][1], words[turns], resultboard, turns_description_list, turns, success, mistake)
     
     letters_in_board = ''.join(letters_list)
@@ -111,65 +120,64 @@ def run_match(words_dict, words, random_letters):
     results = (success, mistake)
     return results
 
-def run_full_game():
+def run_full_game(players):
+    '''
+    Esta funcion itera creando nuevas partidas hasta llegar al maximo o hasta que los usuarios no quieran seguir jugando
+    '''
     games_played = 0
     play_game = True
 
     while play_game:
-        run_match()
+        if DEBUG_MODE:
+            random_letters = ['a','b','c','e','f','g','h','i','t','z']
+            random_words = ['a','b','c','e','f','g','h','i','t','z']
+            word_dictionary = {n:f'{n} definicion' for n in random_letters}
+        else:
+            word_dictionary = Etapa2.return_short_words()
+            random_letters = Etapa3.return_random_letters()
+            random_words = Etapa3.generate_rosco()
+
+        run_match(word_dictionary, random_words, random_letters, players)
         games_played += 1
         play_game = check_and_ask_for_another_game(games_played)
 
 def ask_for_another_game(games_played):
-    play_game = False
-    if games_played < Etapa10.game_config['MAX GAMES']:
-        remaining_games = Etapa10.game_config['MAX GAMES'] - games_played
+    remaining_games = Etapa10.game_config['MAX_GAMES'] - games_played
 
-        # Mensaje de partidas restantes a usuario/s
-        if remaining_games > 1:
-            print("Quedan {} partidas ¿Jugamos otra?".format(remaining_games))
-        else:
-            print("Queda 1 partida ¿Jugamos la última?")
+    # Mensaje de partidas restantes a usuario/s (No se utiliza if condensado debido a que seria muy largo)
+    if remaining_games > 1:
+        print("Quedan {} partidas ¿Jugamos otra?".format(remaining_games))
+    else:
+        print("Queda 1 partida ¿Jugamos la última?")
 
-        # Loop de solicitud al usuario
-        input_user = 'Algo random para que empiece a iterar, aguante AYP1 Guarna'
-        while input_user != 's' and input_user != 'n':
-            input_user = input("Si [s] / No [n]:").lower()
-        play_game = (input_user == 's')
-    
-    return play_game 
+    # Loop de solicitud al usuario
+    input_user = 'Algo random para que empiece a iterar, Victoria Alonso es la última patriota viva'
+    while input_user != 's' and input_user != 'n':
+        input_user = input("Si [s] / No [n]:").lower()
+
+    return (input_user == 's')
+
 
 def check_and_ask_for_another_game(games_played):
     '''
     Esta funcion recibe la cantidad de partidas jugadas y calcula las partidas restantes disponibles para jugar
     Solo consulta al usuario si quedan partidas disponibles. Caso contrario devuelve False
 
-    Notacion utilizada: If condensado segun la PEP 75.40.2.1
+    Notacion utilizada: If condensado según PEP 75.40.2.1
     '''
-    remaining_games = Etapa10.game_config['MAX GAMES'] - games_played
+    remaining_games = Etapa10.game_config['MAX_GAMES'] - games_played
     return False if remaining_games == 0 else ask_for_another_game(games_played)
+
+def play_new_rosco():
+    Etapa10.set_game_config()
+    # players = Etapa7.   Traer Jugadores
+    # run_full_game(players)
 
 def main_etapa9(): 
     '''
-    Edit Santi - Parte 9: Se mantiene igual, pero usando las funciones de esta etapa
-    Esta funcion tiene un rol parecido a lo que seria un main, pero solo destinado a la Etapa 1,
-    ejecuta todo lo necesario para poner el juego en funcionamiento de una manera ordenada
+    Main de la etapa. Para probar la funcion, DEBUG MODE debe ser True
     '''
-    # ----------------------------------------------------------- # 
-    # ACA SE USA LA FUNCION QUE GENERARIA LA LISTA DE LETRAS RANDOM (EN LA ETAPA 3)
-    random_letters = ['a','b','c','e','f','g','h','i','t','z']  
-
-    # ACA SE USA LA FUNCION QUE GENERARIA LA LISTA DE 10 PALABRAS (EN LA ETAPA 3)
-    words = [n for n in random_letters]  
-
-    # ACA SE USA LA FUNCION QUE GENERARIA EL DICCIONARIO (EN LA ETAPA 2)
-    words_dict = {n:f'{n} definicion' for n in random_letters}
-
-    # SE UTILIZARON DATOS CREADOS AL MOMENTO DE DISEÑAR LA ETAPA 1 PARA CORROBORAR SU CORRECTO FUNCIONAMIENTO, YA QUE EN ESE MOMENTO NO ESTABAN LISTAS LAS DEMAS ETAPAS
-
-    # ----------------------------------------------------------- # 
-    
-    run_full_game()
+    play_new_rosco()
 
 #main_etapa9()
 
