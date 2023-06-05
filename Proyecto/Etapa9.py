@@ -4,7 +4,9 @@
 import Etapa1   # TP1 - Interfaz de consola
 import Etapa2   # TP1 - Generacion de diccionario
 import Etapa3   # TP1 - Generacion aleatoria de letras y palabras
+'''
 import Etapa7   # TP2 - Llamado de usuarios
+'''
 import Etapa10  # TP2 - Configuracion del juego
 
 DEBUG_MODE = True
@@ -85,17 +87,18 @@ def print_total_points(total_points,players,games_played):
         print('Puntaje parcial:')
     else:
         print('Reporte final:\nPartidas jugadas: {}\n\nPuntaje final:'.format(games_played))
+
     for player in range(len(players)):
-        print('{}. {} - {} puntos'.format(player + 1, players[player],total_points[players]))
+        print('{}. {} - {} puntos'.format(player + 1, players[player],total_points[player]))
 
 def calculate_points(success, mistake):
     AMOUNT_OF_PLAYERS = len(success)
     
-    result = [ success * Etapa10.game_config['SUCCESS_POINT'] for success in success]
-    for player_num in AMOUNT_OF_PLAYERS:
-        result[player_num] -= mistake//AMOUNT_OF_PLAYERS * Etapa10.game_config['FAIL_POINT']
+    result = [ success * Etapa10.game_config['SUCCESS_POINT'][0] for success in success]
+    for player_num in range(AMOUNT_OF_PLAYERS):
+        result[player_num] -= mistake//AMOUNT_OF_PLAYERS * Etapa10.game_config['FAIL_POINT'][0]
         if player_num < mistake%AMOUNT_OF_PLAYERS:
-            result[player_num] -= Etapa10.game_config['FAIL_POINT']
+            result[player_num] -= Etapa10.game_config['FAIL_POINT'][0]
     return result
 
 def ask_for_word():
@@ -131,7 +134,7 @@ def add_answer(word, actual_letter, correct_word, resultboard, turnboard, turns_
     '''
     AMOUNT_OF_PLAYERS = len(players)
     player_num = mistake%AMOUNT_OF_PLAYERS
-    turnboard[turns][1] = player_num
+    turnboard[turns] = '[' + chr(player_num) + ']'
 
     if word == correct_word:
         resultboard[turns] = '[a]'
@@ -174,8 +177,8 @@ def run_match(words_dict, words, random_letters, players):
 
         # Solicitar palabra y agregar resultado
         word = Etapa1.validate_lenght_and_grammar(Etapa1.ask_for_word(), len(words[turns])) # VERIFICA LA PALABRA DEPENDIENDO DEL LARGO DE LA PALABRA EN EL TURNO ACTUAL
-        success, mistake = add_answer(word, letters_list[turns][1], words[turns], resultboard, turns_description_list, turns, success, mistake)
-    
+        success, mistake = add_answer(word, letters_list[turns][1], words[turns], resultboard, turnboard, turns_description_list, turns, success, mistake, players)
+        # add_answer(word, actual_letter, correct_word, resultboard, turnboard, turns_description_list, turns, success, mistake, players): 
     letters_in_board = ''.join(letters_list)
     results_in_board = ''.join(resultboard)
 
@@ -236,7 +239,7 @@ def run_full_game(players):
     print('-------------------------------------------')
 
 def ask_for_another_game(games_played):
-    remaining_games = Etapa10.game_config['MAX_GAMES'] - games_played
+    remaining_games = Etapa10.game_config['MAX_GAMES'][0] - games_played
 
     # Mensaje de partidas restantes a usuario/s (No se utiliza if condensado debido a que seria muy largo)
     if remaining_games > 1:
@@ -259,13 +262,19 @@ def check_and_ask_for_another_game(games_played):
 
     Notacion utilizada: If condensado según PEP 75.40.2.1
     '''
-    remaining_games = Etapa10.game_config['MAX_GAMES'] - games_played
+    remaining_games = Etapa10.game_config['MAX_GAMES'][0] - games_played
     return False if remaining_games == 0 else ask_for_another_game(games_played)
 
 def play_new_rosco():
-    Etapa10.set_game_config()
-    # players = Etapa7.   Traer Jugadores
-    # run_full_game(players)
+    Etapa10.print_game_config(Etapa10.set_game_config())
+    players = ['a1','a2','a3','a4']
+    if not DEBUG_MODE:
+       '''
+       players = Etapa7.   Traer Jugadores
+       '''  
+       a = 2
+       print(a)
+    run_full_game(players)
 
 def main_etapa9(): 
     '''
