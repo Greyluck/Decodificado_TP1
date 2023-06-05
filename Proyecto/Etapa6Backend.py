@@ -67,12 +67,12 @@ def register_user_pass(tuple):
     return result
 if debug_mode:
     print(check_user_pass(('emilio', 'pepe')))
-    print(check_user_pass(('jorge1', 'colgatedeesta')))
+    print(check_user_pass(('jorge1', 'pruebaconpassincorrecta')))
     #print(register_user_pass(('cenii','bocayoteamo')))
-    #print(register_user_pass(('lucas','gallinadecendida')))
+    #print(register_user_pass(('lucas','riber')))
     
 def main():
     print(check_user_pass(('cenii','bocayoteamo')))
-    print(check_user_pass(('cenii','aguanteelpaco')))
+    print(check_user_pass(('cenii','pruebaconpassincorrecta')))
     print(register_user_pass(('tomi','starwars no es fantasia')))
-main()
+#main()
