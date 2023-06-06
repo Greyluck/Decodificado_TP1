@@ -8,20 +8,11 @@ import Etapa3   # TP1 - Generacion aleatoria de letras y palabras
 import Etapa7   # TP2 - Llamado de usuarios
 '''
 import Etapa10  # TP2 - Configuracion del juego
+from datos import obtener_lista_definiciones
 
 DEBUG_MODE = True
 
-def show_letterboard(random_letters): 
-    '''
-    Edit Santi - Parte 9: Esta funcion no requiere cambios
-
-    Esta funcion recibe como parametro la lista de 10 letras seleccionadas al azar (rosco) y se encarga
-    de generar el tablero que muesta las letras. Ej: [A] [B] [C] ...
-    '''
-    letters_list = [f'[{n.upper()}]' for n in random_letters]
-    return letters_list
-
-def print_board(letters_in_board, turns_in_board, results_in_board,success, mistake, letters_list, turns, words, words_dict, players):
+def print_board(letters_in_board, turns_in_board, results_in_board,success, mistake, letters_list, words, words_dict, players):
     '''
     Edit Santi - Parte 9: Se modularizo esta funcion debido a que es mas complejo que la Et
 
@@ -29,9 +20,9 @@ def print_board(letters_in_board, turns_in_board, results_in_board,success, mist
     la cantidad de dichos aciertos y errores, la lista de letras, el numero de turno actual, la lista de palabras y el diccionario palabras|definiciones,
     los cuales utiliza para imprimir el tablero que muestra los detalles de la partida en cada turno
     '''
-    print('{}\n{}\n{}\n\nJugadores:\n'.format(letters_in_board, turns_in_board, results_in_board)) 
+    print('{}\n{}\n{}\n\nJugadores:'.format(letters_in_board, turns_in_board, results_in_board)) 
     print_players_result(success,mistake,players)   # Imprimir resultado parcial de jugadores
-    print_play()
+    print_play(success, mistake, letters_list, words, words_dict, players)
 
 def print_players_result(success,mistake,players):
     '''
@@ -82,59 +73,44 @@ def print_play(success, mistake, letters_list, words, words_dict, players):
     print('Turno Jugador {} {} - letra {} - Palabra de {} letras\nDefinicion: {}'.format(
         number_player_inplay + 1, players[number_player_inplay], letters_list[turns][1], len(words[turns]), words_dict[words[turns]]))
 
-def print_total_points(total_points,players,games_played):
+def print_points(points,players,games_played):
+    '''
+    Argumentos: Lista de puntos (total o parcial), lista de jugadores y partidas jugadas hasta el momento
+    Funcionalidad: Imprime puntaje parcial si games_played es -1, caso contrario imprime puntaje final del rosco
+    Return: Funcion void
+    '''
     if games_played == -1:
         print('Puntaje parcial:')
     else:
         print('Reporte final:\nPartidas jugadas: {}\n\nPuntaje final:'.format(games_played))
 
     for player in range(len(players)):
-        print('{}. {} - {} puntos'.format(player + 1, players[player],total_points[player]))
+        print('{}. {} - {} puntos'.format(player + 1, players[player],points[player]))
 
 def calculate_points(success, mistake):
+    '''
+    Argumentos: Lista de aciertos y cantidad de errores
+    Funcionalidad: Calcula los puntos de cada jugador segun la configuracion y los aciertos/errores
+    Return: Puntos de cada jugador
+    '''
     AMOUNT_OF_PLAYERS = len(success)
     
-    result = [ success * Etapa10.game_config['SUCCESS_POINT'][0] for success in success]
+    result = [ success * Etapa10.game_config['SUCCESS_POINT'][Etapa10.VALUE] for success in success]
     for player_num in range(AMOUNT_OF_PLAYERS):
-        result[player_num] -= mistake//AMOUNT_OF_PLAYERS * Etapa10.game_config['FAIL_POINT'][0]
+        result[player_num] -= mistake//AMOUNT_OF_PLAYERS * Etapa10.game_config['FAIL_POINT'][Etapa10.VALUE]
         if player_num < mistake%AMOUNT_OF_PLAYERS:
-            result[player_num] -= Etapa10.game_config['FAIL_POINT'][0]
+            result[player_num] -= Etapa10.game_config['FAIL_POINT'][Etapa10.VALUE]
     return result
-
-def ask_for_word():
-    '''
-    Edit Santi - Parte 9: Esta funcion no requiere cambios 
-
-    Esta funcion se encarga de solicitar el ingreso de la palabra
-    a adivinar en cada turno
-    '''
-    word = str.lower(input('Ingrese una única palabra, compuesta solo con letras y de la longitud pedida: '))
-    return word
-    
-def validate_lenght_and_grammar(string, lenght): 
-    '''
-    Edit Santi - Parte 9: Esta funcion no requiere cambios     
-    
-    Esta funcion recibe como parametros la palabra ingresada por el usuario y la longitud
-    de la palabra correcta en dicho turno. La funcion se encarga de validar que dicha
-    palabra ingresada sea puramente alfabetica y de la longitud correspondiente
-    '''
-    while (not string.isalpha()) or (len(string) != lenght):
-        print('Error: la palabra no cumple los requisitos pedidos')
-        string = ask_for_word()
-    return string
 
 def add_answer(word, actual_letter, correct_word, resultboard, turnboard, turns_description_list, turns, success, mistake, players): 
     '''
-    Edit Santi - Parte 9:  Se debe agregar el turnboard
-
-    Esta funcion recibe como parametros la palabra y la letra del turno actual, la palabra correcta, la lista de aciertos/errores,
-    la lista de resultados de cada turno, el numero de turno actual y la cantidad de aciertos y errores hasta el momento.
-    Se encarga de guardar el resultado de cada turno (acierto/error) con el fin de imprimirlos al final de la partida
+    Argumentos: palabra y la letra del turno actual, la palabra correcta, la lista de aciertos/errores, lista de resultados de cada turno, el numero de turno actual y la cantidad de aciertos y errores
+    Funcionalidad: Misma funcion que Etapa1 pero adaptada a las funcionalidades de esta etapa. Se agrega turnboard
+    Return: Lista de aciertos y cantidad de errores
     '''
     AMOUNT_OF_PLAYERS = len(players)
     player_num = mistake%AMOUNT_OF_PLAYERS
-    turnboard[turns] = '[' + chr(player_num) + ']'
+    turnboard[turns] = '[' + str(player_num + 1) + ']'
 
     if word == correct_word:
         resultboard[turns] = '[a]'
@@ -152,12 +128,15 @@ def add_answer(word, actual_letter, correct_word, resultboard, turnboard, turns_
     
 def run_match(words_dict, words, random_letters, players):
     '''
+    Argumentos: Diccionario de palabras, palabras aleatorias, letras aleatorias y jugadores
+    Funcionalidad: Corre partida (run_match Etapa1 adaptado a esta etapa)
+    Return: Lista de puntos de la partida
     ''' 
-    # Lista letra, jugador de turno, acierto si o no 
+
     letters_list = Etapa1.show_letterboard(random_letters) # TABLERO DE LETRAS ELEGIDAS AL AZAR
     turns_per_match = len(letters_list) 
     resultboard = ['[ ]' for n in range(turns_per_match)] # CREA EL TABLERO DE RESULTADOS
-    turnboard = resultboard
+    turnboard = ['[ ]' for n in range(turns_per_match)]
     
     # turns = 0 (comentado porque el for ya lo inicializa) # ITERADOR TANTO DE LAS LETRAS COMO DE LA PALABRA EN EL TURNO ACTUAL
     success = [0 for player in players] # LISTA DE CONTADORES DE ACIERTOS POR JUGADOR
@@ -170,11 +149,7 @@ def run_match(words_dict, words, random_letters, players):
         results_in_board = ''.join(resultboard)
         turns_in_board = ''.join(turnboard)
 
-        # Imprimir Tablero, resultado de jugadores y jugada que se va a hacer (ex print board)
-        print('{}\n{}\n{}\n\nJugadores:\n'.format(letters_in_board, turns_in_board, results_in_board)) 
-        print_players_result(success,mistake,players)
-        print_play(success, mistake, letters_list, words, words_dict, players)
-
+        print_board(letters_in_board, turns_in_board, results_in_board,success, mistake, letters_list, words, words_dict, players)
         # Solicitar palabra y agregar resultado
         word = Etapa1.validate_lenght_and_grammar(Etapa1.ask_for_word(), len(words[turns])) # VERIFICA LA PALABRA DEPENDIENDO DEL LARGO DE LA PALABRA EN EL TURNO ACTUAL
         success, mistake = add_answer(word, letters_list[turns][1], words[turns], resultboard, turnboard, turns_description_list, turns, success, mistake, players)
@@ -196,8 +171,10 @@ def run_match(words_dict, words, random_letters, players):
 
 def run_full_game(players):
     '''
-    Esta funcion itera creando nuevas partidas hasta llegar al maximo o hasta que los usuarios no quieran seguir jugando
-    En modo debug define por default letras y palabras (Idem etapa1)
+    Argumentos: Lista de jugadores
+    Funcionalidad: Itera creando nuevas partidas hasta llegar al maximo o hasta que los usuarios no quieran seguir jugando
+    Return: Funcion void
+    DebugMode:  define por default letras y palabras (Idem etapa1)
     '''
     word_dictionary = {}
     random_letters = []
@@ -213,7 +190,7 @@ def run_full_game(players):
         random_words = ['a','b','c','e','f','g','h','i','t','z']
         word_dictionary = {n:f'{n} definicion' for n in random_letters}
     else:
-        word_dictionary = Etapa2.return_short_words()
+        word_dictionary = Etapa2.return_short_words(obtener_lista_definiciones())
 
     # Iterar jugando al rosco hasta llegar a cant. partidas maximas o hasta que no quieran jugar
     games_played = 0
@@ -221,26 +198,32 @@ def run_full_game(players):
     while play_game:
         partial_points = [0 for n in range(len(players))]
         if not DEBUG_MODE:
-            random_letters = Etapa3.return_random_letters()
-            random_words = Etapa3.generate_rosco()
+            random_letters = Etapa3.return_random_letters(Etapa2.ALPHABET)
+            random_words = Etapa3.generate_rosco(word_dictionary,random_letters)
 
         # Correr partida, sumar puntos al total y preguntar si seguimos
         partial_points = run_match(word_dictionary, random_words, random_letters, players)
         for index in range(len(total_points)):
             total_points[index] += partial_points[index]
-        print_total_points(total_points,players,-1)
+        print_points(total_points,players,-1)
 
         games_played += 1
         play_game = check_and_ask_for_another_game(games_played)
 
-    print_total_points(total_points, players, games_played)
+    print_points(total_points, players, games_played)
     print('-------------------------------------------')
     print('¡Hasta la proxima!')
     print('-------------------------------------------')
 
 def ask_for_another_game(games_played):
-    remaining_games = Etapa10.game_config['MAX_GAMES'][0] - games_played
+    '''
+    Argumentos: Partidas jugadas (debe ser menor que el maximo de partidas)
+    Funcionalidad: Pregunta al usuario si quiere seguir jugando
+    Return: True si usuario quiere seguir jugando
+    '''
+    remaining_games = Etapa10.game_config['MAX_GAMES'][Etapa10.VALUE] - games_played
 
+    print('\n')
     # Mensaje de partidas restantes a usuario/s (No se utiliza if condensado debido a que seria muy largo)
     if remaining_games > 1:
         print("Quedan {} partidas ¿Jugamos otra?".format(remaining_games))
@@ -251,23 +234,34 @@ def ask_for_another_game(games_played):
     input_user = 'Algo random para que empiece a iterar, Victoria Alonso es la última patriota viva'
     while input_user != 's' and input_user != 'n':
         input_user = input("Si [s] / No [n]:").lower()
+        if input_user != 's' and input_user != 'n':
+            print("Input invalido, favor reingresar")
 
+    print('\n')
     return (input_user == 's')
 
 
 def check_and_ask_for_another_game(games_played):
     '''
+    Argumentos: Partidas jugadas al momento
+    Funcionalidad: Calcula partidas restantes y devuelve true/false segun cant. partidas restantes y decision de usuario
+    Return: True si hay partidas restantes y usuario desea jugar otra. False en caso contrario
     Esta funcion recibe la cantidad de partidas jugadas y calcula las partidas restantes disponibles para jugar
     Solo consulta al usuario si quedan partidas disponibles. Caso contrario devuelve False
 
     Notacion utilizada: If condensado según PEP 75.40.2.1
     '''
-    remaining_games = Etapa10.game_config['MAX_GAMES'][0] - games_played
+    remaining_games = Etapa10.game_config['MAX_GAMES'][Etapa10.VALUE] - games_played
     return False if remaining_games == 0 else ask_for_another_game(games_played)
 
 def play_new_rosco():
+    '''
+    Argumentos: Void
+    Funcionalidad: MAIN DE ETAPA9. Setea configuracion, pide los jugadores y corre partida completa
+    Return: Void
+    '''
     Etapa10.print_game_config(Etapa10.set_game_config())
-    players = ['a1','a2','a3','a4']
+    players = ['QaInfeliz','JoseFantasia','Testiculo']
     if not DEBUG_MODE:
        '''
        players = Etapa7.   Traer Jugadores
@@ -282,6 +276,6 @@ def main_etapa9():
     '''
     play_new_rosco()
 
-#main_etapa9()
+main_etapa9()
 
 

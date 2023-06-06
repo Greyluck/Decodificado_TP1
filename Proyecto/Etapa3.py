@@ -18,9 +18,9 @@ def return_random_letters(letters):
     '''
     
     result = []
-    AMOUNT_OF_LETTERS = Etapa10.game_config['LETTERS_ROSCO_QUANTITY']
+    AMOUNT_OF_LETTERS = Etapa10.game_config['LETTERS_ROSCO_QUANTITY'][Etapa10.VALUE]
 
-    for i in range (AMOUNT_OF_LETTERS):
+    for i in range(AMOUNT_OF_LETTERS):
         found_letter = False
         letter = ''
         while not found_letter:
