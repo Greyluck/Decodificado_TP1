@@ -24,7 +24,7 @@ def play_match():
         results = Etapa4.play_the_game()
         points += acumulate_points(results)
         print(f"Puntaje Final: {points}")
-        play_again = str(input("si desea seguir jugando, escriba s, caso contrario el juego terminara"))
+        play_again = str(input("si desea seguir jugando, escriba s, caso contrario el juego terminara "))
         if play_again != 's':
             decision = False
             
@@ -34,4 +34,4 @@ def main_etapa5():
     """
     play_match()
 
-#main_etapa5()
+main_etapa5()
