@@ -7,24 +7,29 @@ import Etapa3   # TP1 - Generacion aleatoria de letras y palabras
 '''
 import Etapa7   # TP2 - Llamado de usuarios
 '''
+import Etapa8
 import Etapa10  # TP2 - Configuracion del juego
+
 from datos import obtener_lista_definiciones
 
-DEBUG_MODE = True
+DEBUG_MODE = False
 
-def print_board(letters_in_board, turns_in_board, results_in_board,success, mistake, letters_list, words, words_dict, players):
+
+def print_board(board, words, words_dict, players):
     '''
-    Edit Santi - Parte 9: Se modularizo esta funcion debido a que es mas complejo que la Et
+    Edit Santi - Parte 9: Se modularizo esta funcion debido a que es mas complejo que la Etapa1
 
-    Esta funcion recibe como parametros los datos que se imprimen en el tablero (letras y cuadros de aciertos/errores), enteros que representan
-    la cantidad de dichos aciertos y errores, la lista de letras, el numero de turno actual, la lista de palabras y el diccionario palabras|definiciones,
-    los cuales utiliza para imprimir el tablero que muestra los detalles de la partida en cada turno
+    Argumentos: Diccionario de tablero (letras, aciertos, etc), palabras, diccionario de palabras y jugadores
+    Funcionalidad: Imprime tablero, resultados del juego (aciertos y turnos) y jugada
+    Return: Funcion void
+    Nota: Se modularizo esta función (la original corresponde a la etapa1)
     '''
-    print('{}\n{}\n{}\n\nJugadores:'.format(letters_in_board, turns_in_board, results_in_board)) 
-    print_players_result(success,mistake,players)   # Imprimir resultado parcial de jugadores
-    print_play(success, mistake, letters_list, words, words_dict, players)
 
-def print_players_result(success,mistake,players):
+    print('{}\n{}\n{}\n\nJugadores:'.format(''.join(board['letter_board']), ''.join(board['result_board']), ''.join(board['turn_board'])))
+    print_players_result(board,players)
+    print_play(board, words, words_dict, players)
+    
+def print_players_result(board,players):
     '''
     Argumentos: lista de aciertos, la cantidad de errores y los jugadores. 
     Funcionalidad: Itera mostrando aciertos y errores de cada jugador
@@ -38,6 +43,9 @@ def print_players_result(success,mistake,players):
     9%4 = 2 -> Primer y segundo jugador se equivocaron (se suma 1 si tu indice es menor que 2). 
     Resultado final = 3 3 2 2 errores
     '''
+    success = board['success']
+    mistake = board['mistake']
+
     AMOUNT_OF_PLAYERS = len(players)
     player_mistakes = 0
 
@@ -54,7 +62,7 @@ def print_players_result(success,mistake,players):
 
     print('\n') 
 
-def print_play(success, mistake, letters_list, words, words_dict, players):
+def print_play(board, words, words_dict, players):
     '''
     Argumentos: Aciertos/errores, lista de letras, palabras, diccionario y jugadores
     Funcionalidad: Mostrar mensaje de Jugador que debe responder, letra palabra y definicion
@@ -62,6 +70,11 @@ def print_play(success, mistake, letters_list, words, words_dict, players):
 
     Nota: La idea de que calcule el turno es minimizar la cantidad de datos guardados por la funcion
     '''
+ 
+    mistake = board['mistake']
+    success = board['success']
+    letters_list = board['letter_board']
+
     # Calculo de turnos jugados, sumando aciertos y errores (minimizar cant. de variables)
     turns = mistake
     for success in success:
@@ -102,30 +115,50 @@ def calculate_points(success, mistake):
             result[player_num] -= Etapa10.game_config['FAIL_POINT'][Etapa10.VALUE]
     return result
 
-def add_answer(word, actual_letter, correct_word, resultboard, turnboard, turns_description_list, turns, success, mistake, players): 
+def add_answer(board, word, words, turns, players): 
     '''
     Argumentos: palabra y la letra del turno actual, la palabra correcta, la lista de aciertos/errores, lista de resultados de cada turno, el numero de turno actual y la cantidad de aciertos y errores
     Funcionalidad: Misma funcion que Etapa1 pero adaptada a las funcionalidades de esta etapa. Se agrega turnboard
     Return: Lista de aciertos y cantidad de errores
     '''
     AMOUNT_OF_PLAYERS = len(players)
-    player_num = mistake%AMOUNT_OF_PLAYERS
-    turnboard[turns] = '[' + str(player_num + 1) + ']'
+    player_num = board['mistake']%AMOUNT_OF_PLAYERS
+    board['turn_board'][turns] = '[' + str(player_num + 1) + ']'
 
-    if word == correct_word:
-        resultboard[turns] = '[a]'
-        success[player_num] += 1
-        turns_description_list.append('Turno Letra {} - Jugador {} {} - Palabra de {} letras - {} - acierto'.format(
-            actual_letter,player_num + 1, players[player_num], len(correct_word), word))
+    if word == words[turns]:
+        board['result_board'][turns] = '[a]'
+        board['success'][player_num] += 1
+        board['turns_description'].append('Turno Letra {} - Jugador {} {} - Palabra de {} letras - {} - acierto'.format(
+            words[turns][0],player_num + 1, players[player_num], len(words[turns]), word))
         print('Palabra correcta!\n')
     else:
-        resultboard[turns] = '[e]'
-        mistake += 1
-        turns_description_list.append('Turno Letra {} - Jugador {} {} - Palabra de {} letras - {} - error - Palabra Correcta: {}'.format(
-            actual_letter,player_num + 1, players[player_num], len(correct_word), word, correct_word))
-        print('Palabra incorrecta - La respuesta correcta era: {}\n'.format(correct_word))
-    return success, mistake
+        board['result_board'][turns] = '[e]'
+        board['mistake'] += 1
+        board['turns_description'].append('Turno Letra {} - Jugador {} {} - Palabra de {} letras - {} - error - Palabra Correcta: {}'.format(
+            words[turns][0],player_num + 1, players[player_num], len(words[turns]), word, words[turns]))
+        print('Palabra incorrecta - La respuesta correcta era: {}\n'.format(words[turns]))
     
+def generate_board(letters, players):
+    '''
+    Argumentos: Letras
+    Funcionalidad: Genera un diccionario que representa el tablero y ordena el juego
+    Return: Diccionario
+    '''
+    result = {}
+
+    result['letter_board'] = Etapa1.show_letterboard(letters)           # TABLERO DE LETRAS ELEGIDAS AL AZAR
+
+    turns_per_match = len(letters) 
+    result['result_board'] = ['[ ]' for n in range(turns_per_match)]    # TABLERO DE ACIERTO/ERROR
+    result['turn_board'] = ['[ ]' for n in range(turns_per_match)]      # TABLERO DE TURNOS
+
+    result['success'] = [0 for player in players]                       # LISTA DE CONTADORES DE ACIERTOS POR JUGADOR
+    result['mistake'] = 0                                               # CONTADOR DE ERRORES, COMUN A JUGADORES                               
+
+    result['turns_description'] = []
+
+    return result
+
 def run_match(words_dict, words, random_letters, players):
     '''
     Argumentos: Diccionario de palabras, palabras aleatorias, letras aleatorias y jugadores
@@ -133,36 +166,22 @@ def run_match(words_dict, words, random_letters, players):
     Return: Lista de puntos de la partida
     ''' 
 
-    letters_list = Etapa1.show_letterboard(random_letters) # TABLERO DE LETRAS ELEGIDAS AL AZAR
-    turns_per_match = len(letters_list) 
-    resultboard = ['[ ]' for n in range(turns_per_match)] # CREA EL TABLERO DE RESULTADOS
-    turnboard = ['[ ]' for n in range(turns_per_match)]
-    
-    # turns = 0 (comentado porque el for ya lo inicializa) # ITERADOR TANTO DE LAS LETRAS COMO DE LA PALABRA EN EL TURNO ACTUAL
-    success = [0 for player in players] # LISTA DE CONTADORES DE ACIERTOS POR JUGADOR
-    mistake = 0 # CONTADOR DE ERRORES (general de todos, no es necesario distinguirlos)
-    
-    turns_description_list = []
-    
-    for turns in range(turns_per_match): # Tambien se podria utilizar while turns < turns_per_match:
-        letters_in_board = ''.join(letters_list)
-        results_in_board = ''.join(resultboard)
-        turns_in_board = ''.join(turnboard)
+    board = generate_board(random_letters, players)
+    turns_per_match = len(random_letters)  
 
-        print_board(letters_in_board, turns_in_board, results_in_board,success, mistake, letters_list, words, words_dict, players)
+    for turns in range(turns_per_match): # Tambien se podria utilizar while turns < turns_per_match:
+
+        print_board(board, words, words_dict, players)
         # Solicitar palabra y agregar resultado
         word = Etapa1.validate_lenght_and_grammar(Etapa1.ask_for_word(), len(words[turns])) # VERIFICA LA PALABRA DEPENDIENDO DEL LARGO DE LA PALABRA EN EL TURNO ACTUAL
-        success, mistake = add_answer(word, letters_list[turns][1], words[turns], resultboard, turnboard, turns_description_list, turns, success, mistake, players)
-        # add_answer(word, actual_letter, correct_word, resultboard, turnboard, turns_description_list, turns, success, mistake, players): 
-    letters_in_board = ''.join(letters_list)
-    results_in_board = ''.join(resultboard)
+        add_answer(board, word, words, turns, players)
 
-    # Resultado final
-    for answer in turns_description_list: # IMPRIME EL RESULTADO DE CADA TURNO, CON SUS ACIERTOS Y ERRORES CORRESPONDIENTES
+    # Resultado final 
+    for answer in board['turns_description']: # IMPRIME EL RESULTADO DE CADA TURNO, CON SUS ACIERTOS Y ERRORES CORRESPONDIENTES
         print(answer)
 
     # Calcular puntos, imprimirlos y devolverlos
-    points = calculate_points(success, mistake)
+    points = calculate_points(board['success'], board['mistake'])
     print('\nPuntaje de la partida:')
     for index in range(len(points)):
         print('{}. {} - {} puntos'.format(index + 1, players[index], points[index]))
@@ -180,7 +199,7 @@ def run_full_game(players):
     random_letters = []
     random_words = []
     
-    total_points = [0 for n in range(len(players))]
+    total_points = [0 for player in players]
     partial_points = total_points
 
     # Si esta en modo debug, defini los valores de prueba hardcodeados
@@ -190,7 +209,8 @@ def run_full_game(players):
         random_words = ['a','b','c','e','f','g','h','i','t','z']
         word_dictionary = {n:f'{n} definicion' for n in random_letters}
     else:
-        word_dictionary = Etapa2.return_short_words(obtener_lista_definiciones())
+        word_dictionary = Etapa8.return_words_and_definition()
+        print(Etapa8.return_file_csv(word_dictionary))
 
     # Iterar jugando al rosco hasta llegar a cant. partidas maximas o hasta que no quieran jugar
     games_played = 0
@@ -261,12 +281,12 @@ def play_new_rosco():
     Return: Void
     '''
     Etapa10.print_game_config(Etapa10.set_game_config())
-    players = ['QaInfeliz','JoseFantasia','Testiculo']
+    players = ['QAFeliz','JoseFantasia','InjustoTestamento','FdeFrontend','Cenicienta']
     if not DEBUG_MODE:
        '''
        players = Etapa7.   Traer Jugadores
        '''  
-       a = 2
+       a = 'Texto basura para dejar todo listo para etapa7'
        print(a)
     run_full_game(players)
 

@@ -85,6 +85,7 @@ def generate_rosco(dictionary,letters):
         else:
             print("NO DA EL LARGO DE PALABRAS")
         '''
+        #print(words_that_start_with_letter)
         random_index = random.randint(0,len(words_that_start_with_letter) - 1)
         result.append(words_that_start_with_letter[random_index])
 
