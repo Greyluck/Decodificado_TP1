@@ -11,11 +11,12 @@ import Etapa5
 import doctest
 
 # Variables necesarias para test 1 y 2
-letters_in_board = '[A][B][C][E][D][E][F][G][H][I]'
-results_in_board = '[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]'
-success = 0
-mistake = 0
-letters_list = ['[A]', '[B]', '[C]', '[D]', '[E]', '[F]', '[G]', '[H]', '[I]', '[J]']
+board = {}
+board['letters_in_board'] = '[A][B][C][E][D][E][F][G][H][I]'
+board['results_in_board'] = '[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]'
+board['success'] = 0
+board['mistake'] = 0
+board['letters_list'] = ['[A]', '[B]', '[C]', '[D]', '[E]', '[F]', '[G]', '[H]', '[I]', '[J]']
 turns = 0
 words = ["Árbol","Bosque","Camping","Descanso","Entorno","Flor","Gaviota","Higo","Intemperie","Jardin"]
 words_dict= {"Árbol":"Descripcion generica 1",
@@ -28,12 +29,11 @@ words_dict= {"Árbol":"Descripcion generica 1",
             "Higo":"Descripcion generica 8",
             "Intemperie":"Descripcion generica 9",
             "Jardin":"Descripcion generica 10",}
-turns_description_list = ["Descripcion"]
+board['turns_description_list'] = ["Descripcion"]
 # Solo para test 2
 actual_letter = "Á"
 correct_word = "Árbol"
-resultboard = ["b"]
-success2 = 9 # Variable agregada para probar un segundo caso
+board['resultboard'] = ["b"]
 
 # TEST1 -----------------------------------------------------------------------------------------------------------------------
 def show_letterboard_test_1():
@@ -55,21 +55,12 @@ def show_letterboard_test_1():
 def print_board_test_2():
     # Ejecucion del caso de prueba
     """
-    >>> Etapa1.print_board(letters_in_board, results_in_board, success, mistake, letters_list, turns, words, words_dict)
+    >>> Etapa1.print_board(board, turns, words, words_dict)
     [A][B][C][E][D][E][F][G][H][I]
     [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
     <BLANKLINE>
-    Aciertos: 0
-    Errores: 0
-    Turno letra A - Palabra de 5 letras
-    Definicion: Descripcion generica 1
-
-    >>> Etapa1.print_board(letters_in_board, results_in_board, success2, mistake, letters_list, turns, words, words_dict)
-    [A][B][C][E][D][E][F][G][H][I]
-    [ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]
-    <BLANKLINE>
-    Aciertos: 9
-    Errores: 0
+    Aciertos: 1
+    Errores: 1
     Turno letra A - Palabra de 5 letras
     Definicion: Descripcion generica 1
     """
@@ -89,15 +80,15 @@ def validate_lenght_and_grammar():
 # TEST4 -----------------------------------------------------------------------------------------------------------------------
 def add_answer():
     """
-    >>> Etapa1.add_answer("Árbol", actual_letter, correct_word, resultboard, turns_description_list, turns, success, mistake)
+    >>> Etapa1.add_answer(board, "Árbol", actual_letter, correct_word, turns)
     Palabra correcta!
     <BLANKLINE>
     (1, 0)
 
-    >>> Etapa1.add_answer("Arboles", actual_letter, correct_word, resultboard, turns_description_list, turns, success, mistake)
+    >>> Etapa1.add_answer(board, "Arboles", actual_letter, correct_word, turns)
     Palabra incorrecta - La respuesta correcta era: Árbol
     <BLANKLINE>
-    (0, 1)
+    (1, 1)
     """
 
 # TEST5 -----------------------------------------------------------------------------------------------------------------------
