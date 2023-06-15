@@ -1,5 +1,5 @@
 """
-constantes y debug_mode
+constantes y globales
 """
 debug_mode = False
 ARCHIVE_END = ['','']
@@ -13,7 +13,7 @@ ACCENT_MARK_UPPER = ['Á','É','Í','Ó','Ú']
 USER_INDEX = 0
 PASSWORD_INDEX = 1
 MAX_PLAYEBLE_USERS = 4
-
+users_list = []
 def obtain_users_archive(route, mode):
     """
     recibe una ruta de un archivo y el modo de apertura, devuelve none si no existe
@@ -141,21 +141,33 @@ def register_user_pass(tuple):
         result = 4
     return result
 
-def login_users(tuple):
+def login_users(tuple, users_list):
     """
-    recibe la tupla de usuarios y retorna una lista con los jugadores cargados
+    recibe la tupla de usuarios y asigna un numero de forma tal que:
+    1: usuario logueado exitosamente
+    2: el usuario o la contraseña son incorrectas
+    3: el usuario ya esta logueado
+    4: se alcanzo la maxima cantidad de jugadores
     """
-    users_list = []
-    if check_user_pass(tuple) and len(users_list) < MAX_PLAYEBLE_USERS:
+    result = 0
+    validate_tuple = check_user_pass(tuple)
+    if validate_tuple and tuple[USER_INDEX] not in users_list:
+        result = 1
         users_list.append(tuple[USER_INDEX])
-    
-    return users_list
+    elif not check_user_pass(tuple):
+        result = 2
+    elif tuple[USER_INDEX] in users_list:
+        result = 3
+    elif len(users_list) == MAX_PLAYEBLE_USERS:
+        result = 4
+    return result
 
 def play_button():
     """
     toma a los jugadores logueados
     """
-    pass
+    #command = lambda: [root.destroy(), users_archive.close(), random.shuffle(users)]
+    
 #if debug_mode:
     #print(check_user_exist('emilio'))
     #print(check_user_exist('emil'))
