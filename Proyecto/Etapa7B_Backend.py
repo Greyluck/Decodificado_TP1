@@ -120,6 +120,7 @@ def register_user_pass(tuple):
     devolviendo, true caso contrario devuelve false
     """
     result = False
+    error_code = ''
     try:
         if create_valid_user(tuple[USER_INDEX]) and create_valid_password(tuple[PASSWORD_INDEX]):
             users_archive_a = obtain_users_archive('users.csv','a')
@@ -129,6 +130,10 @@ def register_user_pass(tuple):
             result = True 
     except:
         result = False
+        if not create_valid_user(tuple[USER_INDEX]):
+            error_code = 'el usuario ingresado no es valido o ya existe'
+        elif not create_valid_password(tuple[PASSWORD_INDEX]):
+            error_code = 'la clave ingresa no es valida'
         if debug_mode:
             print("terna usuario clave invalida")
     return result
