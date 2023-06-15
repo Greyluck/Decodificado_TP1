@@ -1,3 +1,6 @@
+"""
+constantes y debug_mode
+"""
 debug_mode = False
 ARCHIVE_END = ['','']
 MAX_LENGHT_PASS = 12
@@ -9,7 +12,7 @@ ACCENT_MARK_MIN = ['á','é','í','ó','ú']
 ACCENT_MARK_UPPER = ['Á','É','Í','Ó','Ú']
 USER_INDEX = 0
 PASSWORD_INDEX = 1
-
+MAX_PLAYEBLE_USERS = 4
 
 def obtain_users_archive(route, mode):
     """
@@ -138,6 +141,21 @@ def register_user_pass(tuple):
         result = 4
     return result
 
+def login_users(tuple):
+    """
+    recibe la tupla de usuarios y retorna una lista con los jugadores cargados
+    """
+    users_list = []
+    if check_user_pass(tuple) and len(users_list) < MAX_PLAYEBLE_USERS:
+        users_list.append(tuple[USER_INDEX])
+    
+    return users_list
+
+def play_button():
+    """
+    toma a los jugadores logueados
+    """
+    pass
 #if debug_mode:
     #print(check_user_exist('emilio'))
     #print(check_user_exist('emil'))
