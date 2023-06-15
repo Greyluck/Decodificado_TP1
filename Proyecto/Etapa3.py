@@ -10,8 +10,97 @@ import Etapa10
 
 DEBUG_MODE = True
 
+def generate_random_letters_and_words(letters, dictionary):
+    '''
+    Argumentos: Todas las letras y el diccionario de palabras
+    Funcionalidad: Misma que anteriores de esta etapa, solo que ademas compara si la letra tiene palabras que superen el largo minimo.
+    Y como para hacer esto debe iterar las palabras        
+    Return: letras elegidas aleatoriamente, palabras que inician con esa letra
+    Nota: Función refactorizada para parte 2 del trabajo practico debido a que, al existir una longitud minima para las palabras, era posible
+    que no haya palabras para alguna letra (lo cual rompia el programa)
+    '''
+
+    result = [] 
+    words_that_start_with_letter = []
+
+    AMOUNT_OF_LETTERS = Etapa10.game_config['LETTERS_ROSCO_QUANTITY'][Etapa10.VALUE]
+    LENGTH = Etapa10.game_config['MIN_WORD_LENGHT'][Etapa10.VALUE]
+    MIN_RANDOM = 0
+    MAX_RANDOM_LETTER = len(letters) - 1
+    
+    for i in range(AMOUNT_OF_LETTERS):
+        found_letter = False
+        letter = ''
+        words_that_start_with_letter = []
+
+        # Encontrar letra valida
+        while not found_letter:
+            letter = letters[random.randint(MIN_RANDOM, MAX_RANDOM_LETTER)]
+
+            # Si la letra no fue agregada antes y tiene palabras, agregala al resultado
+            if not letter in [ word[0] for word in result ]:
+                words_that_start_with_letter = return_words_that_start_with_letter(letter,dictionary.keys(),LENGTH)
+                found_letter = ( len(words_that_start_with_letter) != 0 )
+
+        # Agregar (letra, palabra aleatoria)
+        random_index = random.randint(MIN_RANDOM, len(words_that_start_with_letter) - 1)
+        result.append(words_that_start_with_letter[random_index])
+
+    # print(result)
+    return spanish_sort(result)
+
+def return_words_that_start_with_letter(letter, words, length):
+    return [ word for word in words if is_this_word_correct(letter,word,length)]
+
+def is_this_word_correct(letter,word, length):
+    '''
+    Argumentos: Letra y palabra
+    Return: True si la palabra empieza con la letra y cumple con el largo, false en caso contrario
+    '''
+    result = False
+    if len(word) >= length:
+        if letter == word[0]:
+            result = True
+        elif letter == 'a' and word[0] == 'á':
+            result = True
+        elif letter == 'e' and word[0] == 'é':
+            result = True
+        elif letter == 'i' and word[0] == 'í':
+            result = True
+        elif letter == 'o' and word[0] == 'ó':
+            result = True
+        elif letter == 'u' and word[0] == 'ú':
+            result = True
+
+    return result
+
+def spanish_sort(random_words):
+    '''
+    Argumentos: Lista de palabras
+    Funcionalidad: Inicia por el final, si la ñ no esta devuelve todo igual, si esta compara con el elemento
+    a su izquierda y de ser menor, se intercambian entre si
+    Return: Misma lista pero con la posicion de la ñ corregida
+    Nota: Funcion refactorizada en TP N°2 - Etapa6
+    '''
+    result = random_words
+    result.sort()
+    #print(result)
+    LENGTH = len(result)
+    
+    if result[LENGTH - 1][0] == 'ñ':
+        # Encontrar posicion de ñ
+        position = LENGTH - 2
+        while position > 0 and result[position][0] > 'n':
+            position -= 1
+
+        # Corregir posicion
+        result.insert(position, result.pop())
+        
+    return result
+
 def return_random_letters(letters):
     '''
+    TP N°1
     Esta funcion recibe la lista de letras y te devuelve otra lista de 10 letras elegidas pseudo-aleatoriamente (ignorar el pseudo en la 
     expresion anterior) 
     La lista esta ordenada alfabeticamente
@@ -40,6 +129,7 @@ def return_random_letters(letters):
 
 def generate_rosco(dictionary,letters):
     '''
+    TP N°1
     ESTA FUNCION RECIBE DICCIONARIO DE PALABRA: DEFINICION y la lista del total de letras del rosco.
     Devuelve una lista ordenada alfabeticamente con las palabras elegidas
     '''
@@ -66,26 +156,7 @@ def generate_rosco(dictionary,letters):
             words_that_start_with_letter.append(words_for_use[i])
             i += 1
 
-        # ----------------------------------------------------------------------------------------------------
-        # TODO: En esta seccion hay un error que aparece solo en una de las pcs donde se ejecuta (PC de Emilio)
-        # Se debe revisar este error para entender como manejarlo.
-        # print("ACA!")
-        # print(palabras_letra)
-        # print(0,len(palabras_letra) - 1)
-        # print(random.randint(0,len(palabras_letra) - 1))
-        # print(palabras_letra[random.randint(0,len(palabras_letra) - 1)])
-        # print(resultado.append(palabras_letra[random.randint(0,len(palabras_letra) - 1)]))
-        # ----------------------------------------------------------------------------------------------------
-
-        # TIRAR DADO PARA ELEGIR PALABRA PARA LA LETRA
-        '''
-        if len(words_that_start_with_letter) > 5:
-            random_index = random.randint(0,len(words_that_start_with_letter) - 1)
-            result.append(words_that_start_with_letter[random_index])
-        else:
-            print("NO DA EL LARGO DE PALABRAS")
-        '''
-        #print(words_that_start_with_letter)
+        # DEBUG HEISENBUG print("LETRA: {} PALABRAS: {}".format(letter, words_that_start_with_letter))
         random_index = random.randint(0,len(words_that_start_with_letter) - 1)
         result.append(words_that_start_with_letter[random_index])
 
@@ -93,6 +164,7 @@ def generate_rosco(dictionary,letters):
 
 def obtain_words_with_accents(letter,words):
     '''
+    TP N°1
     Si la letra es una vocal, esta funcion devuelve todas las palabras que inician con dicha vocal acentuada
     '''
     # INICIAMOS LA BUSQUEDA DESDE EL FINAL DEBIDO A QUE sort() DEJA PALABRAS CON INICIO ACENTUADO AL FINAL DE LA LISTA
@@ -117,6 +189,7 @@ def obtain_words_with_accents(letter,words):
 
 def correct_ñ_position(letters):
     '''
+    TP N°1
     Explicación:
     Recibe una lista de letras ordenada por sort() y devuelve la misma lista pero con la ñ en la posición correcta para nuestro idioma.
     Procedimiento:
@@ -137,6 +210,7 @@ def correct_ñ_position(letters):
 
 
 def main_etapa3():
+    # TP N°1
     dictionary = Etapa2.return_short_words(obtener_lista_definiciones())
     
     # TEST DE CONSIGA

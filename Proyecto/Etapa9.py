@@ -95,6 +95,7 @@ def print_points(points,players,games_played):
     if games_played == -1:
         print('Puntaje parcial:')
     else:
+        print('---------------------------------------------------------------')
         print('Reporte final:\nPartidas jugadas: {}\n\nPuntaje final:'.format(games_played))
 
     for player in range(len(players)):
@@ -210,16 +211,21 @@ def run_full_game(players):
         word_dictionary = {n:f'{n} definicion' for n in random_letters}
     else:
         word_dictionary = Etapa8.return_words_and_definition()
-        print(Etapa8.return_file_csv(word_dictionary))
+        Etapa8.return_file_csv(word_dictionary)
 
+    # print(word_dictionary)
     # Iterar jugando al rosco hasta llegar a cant. partidas maximas o hasta que no quieran jugar
     games_played = 0
     play_game = True
     while play_game:
         partial_points = [0 for n in range(len(players))]
         if not DEBUG_MODE:
+            random_words = Etapa3.generate_random_letters_and_words(Etapa2.ALPHABET, word_dictionary)
+            random_letters = [ word[0] for word in random_words]
+            '''
             random_letters = Etapa3.return_random_letters(Etapa2.ALPHABET)
             random_words = Etapa3.generate_rosco(word_dictionary,random_letters)
+            '''
 
         # Correr partida, sumar puntos al total y preguntar si seguimos
         partial_points = run_match(word_dictionary, random_words, random_letters, players)
@@ -253,7 +259,7 @@ def ask_for_another_game(games_played):
     # Loop de solicitud al usuario
     input_user = 'Algo random para que empiece a iterar, Victoria Alonso es la última patriota viva'
     while input_user != 's' and input_user != 'n':
-        input_user = input("Si [s] / No [n]:").lower()
+        input_user = input("Si [s] / No [n]: ").lower()
         if input_user != 's' and input_user != 'n':
             print("Input invalido, favor reingresar")
 
