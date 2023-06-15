@@ -1,4 +1,4 @@
-debug_mode = True
+debug_mode = False
 ARCHIVE_END = ['','']
 MAX_LENGHT_PASS = 12
 MIN_LENGHT_PASS = 6
@@ -91,7 +91,7 @@ def create_valid_user(user):
         if not user[i].isalpha() and not user[i].isnumeric() and user[i] != '-' and user[i] not in ACCENT_MARK_MIN and user[i] not in ACCENT_MARK_UPPER:
             invalid_count +=1
         i += 1
-    if invalid_count == 0 and lenght >= MIN_LENGHT_USER and lenght <= MAX_LENGHT_USER and not check_user_exist(user):
+    if invalid_count == 0 and lenght >= MIN_LENGHT_USER and lenght <= MAX_LENGHT_USER:
         result= True    
     return result
 
@@ -116,26 +116,26 @@ def check_user_pass(tuple):
 
 def register_user_pass(tuple):
     """
-    recibe una tupla de valores (usuario, contraseña), valida el usuario y clave , corrobora si el usuario existe y la agrega al archivo
-    devolviendo, true caso contrario devuelve false
+    recibe una tupla de valores (usuario, contraseña), valida que el usuario ingresado sea valido, 
+    que no exista, y que la contraseña sea valida y retorna un entero de la siguiente forma:
+    1: el usuario es valido, el usuario no existe, la contraseña es valida entonces se graban en el archivo
+    2: el usuario existe 
+    3: el usuario no es valido
+    4: la contraseña no es valida
     """
-    result = False
-    error_code = ''
-    try:
-        if create_valid_user(tuple[USER_INDEX]) and create_valid_password(tuple[PASSWORD_INDEX]):
-            users_archive_a = obtain_users_archive('users.csv','a')
-            if debug_mode:print("esta es la tupla ", tuple) 
-            line = ';'.join(tuple) + '\n'
-            users_archive_a.write(line)
-            result = True 
-    except:
-        result = False
-        if not create_valid_user(tuple[USER_INDEX]):
-            error_code = 'el usuario ingresado no es valido o ya existe'
-        elif not create_valid_password(tuple[PASSWORD_INDEX]):
-            error_code = 'la clave ingresa no es valida'
-        if debug_mode:
-            print("terna usuario clave invalida")
+    result = 0
+    if create_valid_user(tuple[USER_INDEX]) and not check_user_exist(tuple[USER_INDEX]) and create_valid_password(tuple[PASSWORD_INDEX]):
+        users_archive_a = obtain_users_archive('users.csv','a')
+        if debug_mode:print("esta es la tupla ", tuple) 
+        line = ';'.join(tuple) + '\n'
+        users_archive_a.write(line)
+        result = 1   
+    elif check_user_exist(tuple[USER_INDEX]):
+        result = 2
+    elif not create_valid_user(tuple[USER_INDEX]):
+        result = 3
+    elif not create_valid_password(tuple[PASSWORD_INDEX]):
+        result = 4
     return result
 
 #if debug_mode:
@@ -151,10 +151,13 @@ def register_user_pass(tuple):
     #print(check_user_pass(('jorge1', 'pruebaconpassincorrecta')))
     #print(register_user_pass(('cenii','bocayoteamo')))
     #print(register_user_pass(('valentino-ceniceros','Valido1#')))
-    #print(register_user_pass(('emilio','Valido1#')))
-    #print(register_user_pass(('lucas-aldonate','Valido1!')))
-def main():
-    login = check_user_pass()
-    registe = register_user_pass()
-main()
+print(register_user_pass(('emilio','Valido1#')))#devolvera 1
+print(register_user_pass(('lucas-aldonate','Valido1!')))#devolvera 1
+print(register_user_pass(('emilio','Valido1!')))#devolvera 2
+print(register_user_pass(('emilio0147@','Valido1#')))#devolvera 3
+print(register_user_pass(('emilio-ontiveros','Valido1@')))#devolvera 4
+#def main():
+ #   login = check_user_pass()
+  #  registe = register_user_pass()
+#main()
 
