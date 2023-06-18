@@ -26,7 +26,7 @@ def create_GUI():
     padding = 5
 
     # Otros
-    bd_generic = 7
+    bd_generic = 0
 
     # -----------------------------------------------------------------------------------------------
     # ROOT ------------------------------------------------------------------------------------------
@@ -104,10 +104,10 @@ def create_GUI():
     # -----------------------------
     # Estoy usando una grilla, en la cual agrego los elementos.
     Label(myFrame,text="Jugador").grid(row=2,column=0,sticky="w") 
-    if debugMode == True: Entry(myFrame,bg="Red").grid(row=2,column=1,sticky="w") 
+    Entry(myFrame).grid(row=2,column=1,sticky="w") 
 
     Label(myFrame,text="Contraseña").grid(row=3,column=0,sticky="w") 
-    if debugMode == True: Entry(myFrame,bg="Blue").grid(row=3,column=1,sticky="w") 
+    Entry(myFrame).grid(row=3,column=1,sticky="w") 
 
     # ---------------------------------------------------------------------------------------------
     # FRAME 2 -------------------------------------------------------------------------------------
@@ -124,13 +124,13 @@ def create_GUI():
     textocambiante = StringVar()
 
     # En este caso le asigno un valor especifico que quiero que muestre por defecto
-    textocambiante.set("Texto no modificado")
+    textocambiante.set("Ingrese el usuario")
 
     # Creo el lable y entry que contendran los valores que cambiaran.
     LabelQueCambiaAlPresionarElBoton = Label(myFrame2,textvariable=textocambiante).grid(row=6,column=0) 
 
     def funcionDelBoton():
-        textocambiante.set("Texto cambiado")
+        textocambiante.set("Ingreso el usuario")
 
     boton = Button (myFrame2, text="enviar", command=funcionDelBoton).grid(row=8,column=0)
 
