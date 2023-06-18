@@ -1,5 +1,5 @@
 """
-constantes y globales
+constantes y variables globales
 """
 debug_mode = False
 ARCHIVE_END = ['','']
@@ -13,7 +13,16 @@ ACCENT_MARK_UPPER = ['Á','É','Í','Ó','Ú']
 USER_INDEX = 0
 PASSWORD_INDEX = 1
 MAX_PLAYEBLE_USERS = 4
+LOGIN_STATUS_OK = 1 # Usuario logueado exitosamente
+LOGIN_STATUS_FAIL = 2 # El usuario o la contraseña son incorrectas
+LOGIN_STATUS_LOGED = 3 # El usuario ya esta logueado
+LOGIN_STATUS_MAX = 4 # Se alcanzo la maxima cantidad de jugadores
+REGISTER_STATUS_OK = 1 # Se grabo en el archivo un nuevo usuario valido con una contraseña valida que antes no existia.
+REGISTER_STATUS_USED = 2 # El usuario ya existia
+REGISTER_STATUS_INVALID_USER = 3 # El usuario no es valido
+REGISTER_STATUS_INVALID_PASS = 4 # La contraseña no es valida
 users_list = []
+
 def obtain_users_archive(route, mode):
     """
     recibe una ruta de un archivo y el modo de apertura, devuelve none si no existe
@@ -118,14 +127,15 @@ def check_user_pass(tuple):
     return result
 
 
-REGISTER_STATUS_OK           = 1 # Se grabo en el archivo un nuevo usuario valido con una contraseña valida que antes no existia.
-REGISTER_STATUS_USED         = 2 # El usuario ya existia
-REGISTER_STATUS_INVALID_USER = 3 # El usuario no es valido
-REGISTER_STATUS_INVALID_PASS = 4 # La contraseña no es valida
+
 def register_user_pass(tuple):
     """
     Recibe una tupla de valores (usuario, contraseña), valida que el usuario ingresado sea valido, 
     que no exista, y que la contraseña sea valida. Retorna el register status correspondiente.
+    REGISTER_STATUS_OK           = Se grabo en el archivo un nuevo usuario valido con una contraseña valida que antes no existia.
+    REGISTER_STATUS_USED         = El usuario ya existia
+    REGISTER_STATUS_INVALID_USER = El usuario no es valido
+    REGISTER_STATUS_INVALID_PASS = La contraseña no es valida
     """    
     if create_valid_user(tuple[USER_INDEX]) and not check_user_exist(tuple[USER_INDEX]) and create_valid_password(tuple[PASSWORD_INDEX]):
         users_archive_a = obtain_users_archive('users.csv','a')
@@ -144,12 +154,11 @@ def register_user_pass(tuple):
 def login_users(tuple, users_list):
     """
     Recibe la tupla de usuarios y devuelve el estado:
+    LOGIN_STATUS_OK    = Usuario logueado exitosamente
+    LOGIN_STATUS_FAIL  =  El usuario o la contraseña son incorrectas
+    LOGIN_STATUS_LOGED = El usuario ya esta logueado
+    LOGIN_STATUS_MAX   =  Se alcanzo la maxima cantidad de jugadores
     """
-    LOGIN_STATUS_OK    = 1 # Usuario logueado exitosamente
-    LOGIN_STATUS_FAIL  = 2 # El usuario o la contraseña son incorrectas
-    LOGIN_STATUS_LOGED = 3 # El usuario ya esta logueado
-    LOGIN_STATUS_MAX   = 4 # Se alcanzo la maxima cantidad de jugadores
-
     result = 0
     validate_tuple = check_user_pass(tuple)
     if validate_tuple and tuple[USER_INDEX] not in users_list:
