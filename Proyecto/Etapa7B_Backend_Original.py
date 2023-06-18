@@ -117,50 +117,49 @@ def check_user_pass(tuple):
     users_archive.seek(0)
     return result
 
-
-REGISTER_STATUS_OK           = 1 # Se grabo en el archivo un nuevo usuario valido con una contraseña valida que antes no existia.
-REGISTER_STATUS_USED         = 2 # El usuario ya existia
-REGISTER_STATUS_INVALID_USER = 3 # El usuario no es valido
-REGISTER_STATUS_INVALID_PASS = 4 # La contraseña no es valida
 def register_user_pass(tuple):
     """
-    Recibe una tupla de valores (usuario, contraseña), valida que el usuario ingresado sea valido, 
-    que no exista, y que la contraseña sea valida. Retorna el register status correspondiente.
-    """    
+    recibe una tupla de valores (usuario, contraseña), valida que el usuario ingresado sea valido, 
+    que no exista, y que la contraseña sea valida y retorna un entero de la siguiente forma:
+    1: el usuario es valido, el usuario no existe, la contraseña es valida entonces se graban en el archivo
+    2: el usuario existe 
+    3: el usuario no es valido
+    4: la contraseña no es valida
+    """
+    result = 0
     if create_valid_user(tuple[USER_INDEX]) and not check_user_exist(tuple[USER_INDEX]) and create_valid_password(tuple[PASSWORD_INDEX]):
         users_archive_a = obtain_users_archive('users.csv','a')
         if debug_mode:print("esta es la tupla ", tuple) 
         line = ';'.join(tuple) + '\n'
         users_archive_a.write(line)
-        result = REGISTER_STATUS_OK  
+        result = 1   
     elif check_user_exist(tuple[USER_INDEX]):
-        result = REGISTER_STATUS_USED
+        result = 2
     elif not create_valid_user(tuple[USER_INDEX]):
-        result = REGISTER_STATUS_INVALID_USER
+        result = 3
     elif not create_valid_password(tuple[PASSWORD_INDEX]):
-        result = REGISTER_STATUS_INVALID_PASS
+        result = 4
     return result
 
 def login_users(tuple, users_list):
     """
-    Recibe la tupla de usuarios y devuelve el estado:
+    recibe la tupla de usuarios y asigna un numero de forma tal que:
+    1: usuario logueado exitosamente
+    2: el usuario o la contraseña son incorrectas
+    3: el usuario ya esta logueado
+    4: se alcanzo la maxima cantidad de jugadores
     """
-    LOGIN_STATUS_OK    = 1 # Usuario logueado exitosamente
-    LOGIN_STATUS_FAIL  = 2 # El usuario o la contraseña son incorrectas
-    LOGIN_STATUS_LOGED = 3 # El usuario ya esta logueado
-    LOGIN_STATUS_MAX   = 4 # Se alcanzo la maxima cantidad de jugadores
-
     result = 0
     validate_tuple = check_user_pass(tuple)
     if validate_tuple and tuple[USER_INDEX] not in users_list:
-        result = LOGIN_STATUS_OK 
+        result = 1
         users_list.append(tuple[USER_INDEX])
     elif not check_user_pass(tuple):
-        result = LOGIN_STATUS_FAIL
+        result = 2
     elif tuple[USER_INDEX] in users_list:
-        result = LOGIN_STATUS_LOGED
+        result = 3
     elif len(users_list) == MAX_PLAYEBLE_USERS:
-        result = LOGIN_STATUS_MAX
+        result = 4
     return result
 
 def play_button():
@@ -182,13 +181,11 @@ def play_button():
     #print(check_user_pass(('jorge1', 'pruebaconpassincorrecta')))
     #print(register_user_pass(('cenii','bocayoteamo')))
     #print(register_user_pass(('valentino-ceniceros','Valido1#')))
-
-#print(register_user_pass(('emilio','Valido1#')))#devolvera 1
-#print(register_user_pass(('lucas-aldonate','Valido1!')))#devolvera 1
-#print(register_user_pass(('emilio','Valido1!')))#devolvera 2
-#print(register_user_pass(('emilio0147@','Valido1#')))#devolvera 3
-#print(register_user_pass(('emilio-ontiveros','Valido1@')))#devolvera 4
-
+print(register_user_pass(('emilio','Valido1#')))#devolvera 1
+print(register_user_pass(('lucas-aldonate','Valido1!')))#devolvera 1
+print(register_user_pass(('emilio','Valido1!')))#devolvera 2
+print(register_user_pass(('emilio0147@','Valido1#')))#devolvera 3
+print(register_user_pass(('emilio-ontiveros','Valido1@')))#devolvera 4
 #def main():
  #   login = check_user_pass()
   #  registe = register_user_pass()
