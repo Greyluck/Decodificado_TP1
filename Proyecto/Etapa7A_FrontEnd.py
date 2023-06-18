@@ -149,11 +149,9 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
         # Creo el lable y entry que contendran los valores que cambiaran.
         LabelQueCambiaAlPresionarElbutton= Label(myFrame2,textvariable=textocambiante).grid(row=6,column=0) 
 
-        def login_with_user():
-            textocambiante.set("Se loggeo")
-        
-        login_button              = Button (myFrame, text="Ingresar", command=login_with_user).grid(row=8,column=0)
-        open_user_creation_button = Button (myFrame, text="Crear usuario nuevo", command=create_new_user_GUI).grid(row=8,column=1)
+        login_button              = Button (myFrame, text="Ingresar", command=lambda:login_with_user(textocambiante)).grid(row=8,column=0) 
+        # TODO borrar el texto cambiante sino es necesario
+        open_user_creation_button = Button (myFrame, text="Crear usuario nuevo", command=lambda: create_new_user_GUI()).grid(row=8,column=1)
 
         # ---------------------------------------------------------------------------------------------
         # FRAME 3 -------------------------------------------------------------------------------------
@@ -202,6 +200,9 @@ def create_new_user_GUI():
 def create_new_user ():
     """Envia los parametros necesarios para crear un usuario"""
     pass
+
+def login_with_user(textocambiante):
+    textocambiante.set("Se loggeo")
 
 def main():
     create_GUI()
