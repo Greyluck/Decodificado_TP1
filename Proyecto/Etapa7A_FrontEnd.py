@@ -7,6 +7,8 @@
 # -----------------------------------------------------------------------------------------------
 from tkinter import *  
 import Etapa7B_Backend
+import Etapa9
+
 
 # Menus
 MENU_VALUE_MAIN_MENU = 0                #   0) Menu principal 
@@ -142,9 +144,9 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
         # -----------------------------
         # Botones ---------------------
         # -----------------------------
-        login_button              = Button (my_frame, text="Ingresar", command=lambda:login_with_user(info_text)).grid(row=8,column=0) 
+        login_button              = Button (my_frame, text="Ingresar", command=lambda:login_with_user(info_text, (user_input.get(),pass1_input.get()) )).grid(row=8,column=0) 
         open_user_creation_button = Button (my_frame, text="Crear usuario nuevo", command=lambda: create_new_user_GUI()).grid(row=8,column=1)
-
+        
         # ---------------------------------------------------------------------------------------------
         # FRAME 3 -------------------------------------------------------------------------------------
         # ---------------------------------------------------------------------------------------------
@@ -152,7 +154,7 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
         my_frame3=Frame(my_main_frame)
         my_frame3.grid(row=3,column=0)
         my_frame3.config(height=200,width=200, padx=padding, pady=padding, bg="#f7f2e1", bd=2, relief="groove")
-
+    
         # -----------------------------
         # GRID ------------------------
         # -----------------------------
@@ -177,6 +179,13 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
     my_frame4=Frame(my_main_frame)
     my_frame4.grid(row=9,column=0)
     my_frame4.config(height=200,width=200, padx=padding, pady=padding, bg="#f7f2e1", relief="groove")
+
+    def play_game():
+        Etapa7B_Backend.users_archive.close()
+        root.destroy()
+        Etapa9.play_new_rosco(Etapa7B_Backend.users_list)
+    play_button = Button (my_frame4, text="Jugar!", command=lambda: play_game()).grid(row=0,column=0)
+
     Label(my_frame4,text="Creado por Decodificado", font=("Times New roman",10,"bold italic")).grid(row=1,column=0,sticky="w") 
 
     # -----------------------------
@@ -220,8 +229,9 @@ def show_pop_up(pop_up_text):
     Label(my_frame_0,text=("(Puede cerrar la ventana)")).grid(row=1,column=0)
     
 
-def login_with_user(info_text):
-    info_text.set("Se loggeo")
+def login_with_user(info_text,logged_user_tuple):
+    if (Etapa7B_Backend.login_users(logged_user_tuple)) == 1: # Devuelve el codigo de OK
+        info_text.set("Se loggeo el jugador")
 
 def main():
     create_GUI()

@@ -13,10 +13,12 @@ ACCENT_MARK_UPPER = ['Á','É','Í','Ó','Ú']
 USER_INDEX = 0
 PASSWORD_INDEX = 1
 MAX_PLAYEBLE_USERS = 4
+
 LOGIN_STATUS_OK = 1 # Usuario logueado exitosamente
 LOGIN_STATUS_FAIL = 2 # El usuario o la contraseña son incorrectas
 LOGIN_STATUS_LOGED = 3 # El usuario ya esta logueado
 LOGIN_STATUS_MAX = 4 # Se alcanzo la maxima cantidad de jugadores
+
 REGISTER_STATUS_OK = 1 # Se grabo en el archivo un nuevo usuario valido con una contraseña valida que antes no existia.
 REGISTER_STATUS_USED = 2 # El usuario ya existia
 REGISTER_STATUS_INVALID_USER = 3 # El usuario no es valido
@@ -151,7 +153,7 @@ def register_user_pass(tuple):
         result = REGISTER_STATUS_INVALID_PASS
     return result
 
-def login_users(tuple, users_list):
+def login_users(tuple):
     """
     Recibe la tupla de usuarios y devuelve el estado:
     LOGIN_STATUS_OK    = Usuario logueado exitosamente
