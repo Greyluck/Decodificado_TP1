@@ -10,6 +10,8 @@ import Etapa7   # TP2 - Llamado de usuarios
 import Etapa8
 import Etapa10  # TP2 - Configuracion del juego
 
+import random
+
 from datos import obtener_lista_definiciones
 
 DEBUG_MODE = False
@@ -98,8 +100,9 @@ def print_points(points,players,games_played):
         print('---------------------------------------------------------------')
         print('Reporte final:\nPartidas jugadas: {}\n\nPuntaje final:'.format(games_played))
 
+    points_sorted = sorted(points.items(), key=lambda x:x[1], reverse=True)
     for player in range(len(players)):
-        print('{}. {} - {} puntos'.format(player + 1, players[player],points[player]))
+        print('{}. {} - {} puntos'.format(player + 1, points_sorted[player][0],points_sorted[player][1]))
 
 def calculate_points(success, mistake):
     '''
@@ -200,7 +203,7 @@ def run_full_game(players):
     random_letters = []
     random_words = []
     
-    total_points = [0 for player in players]
+    total_points = { player: 0 for player in players}
     partial_points = total_points
 
     # Si esta en modo debug, defini los valores de prueba hardcodeados
@@ -217,8 +220,11 @@ def run_full_game(players):
     # Iterar jugando al rosco hasta llegar a cant. partidas maximas o hasta que no quieran jugar
     games_played = 0
     play_game = True
+    AMOUNT_OF_PLAYERS = len(players)
+
     while play_game:
-        partial_points = [0 for n in range(len(players))]
+        random.shuffle(players)
+        partial_points = [0 for n in range(AMOUNT_OF_PLAYERS)]
         if not DEBUG_MODE:
             random_words = Etapa3.generate_random_letters_and_words(Etapa2.ALPHABET, word_dictionary)
             random_letters = [ word[0] for word in random_words]
@@ -229,8 +235,8 @@ def run_full_game(players):
 
         # Correr partida, sumar puntos al total y preguntar si seguimos
         partial_points = run_match(word_dictionary, random_words, random_letters, players)
-        for index in range(len(total_points)):
-            total_points[index] += partial_points[index]
+        for index in range(AMOUNT_OF_PLAYERS):
+            total_points[players[index]] += partial_points[index]
         print_points(total_points,players,-1)
 
         games_played += 1
@@ -280,27 +286,20 @@ def check_and_ask_for_another_game(games_played):
     remaining_games = Etapa10.game_config['MAX_GAMES'][Etapa10.VALUE] - games_played
     return False if remaining_games == 0 else ask_for_another_game(games_played)
 
-def play_new_rosco():
+def play_new_rosco(players):
     '''
-    Argumentos: Void
-    Funcionalidad: MAIN DE ETAPA9. Setea configuracion, pide los jugadores y corre partida completa
+    Argumentos: Recibe lista jugadores
+    Funcionalidad: MAIN DE ETAPA9. Setea configuracion,
     Return: Void
     '''
     Etapa10.print_game_config(Etapa10.set_game_config())
-    players = ['QAFeliz','JoseFantasia','InjustoTestamento','FdeFrontend','Cenicienta']
-    if not DEBUG_MODE:
-       '''
-       players = Etapa7.   Traer Jugadores
-       '''  
-       a = 'Texto basura para dejar todo listo para etapa7'
-       print(a)
     run_full_game(players)
 
 def main_etapa9(): 
     '''
     Main de la etapa. Para probar la funcion, DEBUG MODE debe ser True
     '''
-    play_new_rosco()
+    play_new_rosco(['ej1','ej2','ej3'])
 
 main_etapa9()
 
