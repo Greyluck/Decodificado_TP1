@@ -85,8 +85,8 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
     #  - Una forma de agregar un label rapidamente es: Label(my_frame,text="Texto de prueba").place(x=50,y=50)
     #  - Otra forma es: nombreDelLabel = Label(contenedor,opciones) y luego ir agregando los valores necesarios 
     imagen_rosco=PhotoImage(file="Rosco.png")
-    title_Label = Label(my_frame_0,image=imagen_rosco)
-    #title_Label = Label(my_frame_0,text="El Rosco", font=("Times New roman",22,"bold"), fg='PURPLE')
+    #title_Label = Label(my_frame_0,image=imagen_rosco)
+    title_Label = Label(my_frame_0,text="El Rosco", font=("Times New roman",22,"bold"), fg='PURPLE')
     title_Label.grid(row=0,column=0)
         
 
@@ -193,9 +193,10 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
     my_frame4.grid(row=9,column=0)
     my_frame4.config(height=200,width=200, padx=padding, pady=padding, relief="groove")
     
-    imagen_equipo=PhotoImage(file="Decodificado titulo.png")
-    team_Label = Label(my_frame4,image=imagen_equipo)
-    team_Label.grid(row=3,column=0)
+    # TODO Agregar la imagen cuando se cree la segunda GUI
+    #imagen_equipo=PhotoImage(file="Decodificado titulo.png")
+    #team_Label = Label(my_frame4,image=imagen_equipo)
+    #team_Label.grid(row=3,column=0)
     
     def play_game():
         if len(Etapa7B_Backend.users_list)>0:
@@ -205,7 +206,7 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
         else: show_pop_up("Ingrese al menos un jugador")
     play_button = Button (my_frame4, text="Jugar!", command=lambda: play_game()).grid(row=0,column=0)
 
-    Label(my_frame4,text="Creado por el equipo", font=("Times New roman",10,"bold italic")).grid(row=2,column=0,sticky="w") 
+    Label(my_frame4,text="Creado por Decodificado", font=("Times New roman",10,"bold italic")).grid(row=2,column=0,sticky="w") 
 
     # -----------------------------
     # LOOP ------------------------
