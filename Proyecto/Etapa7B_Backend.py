@@ -1,7 +1,20 @@
 """
+funcion para abrir archivos
+"""
+def obtain_users_archive(route, mode):
+    """
+    recibe una ruta de un archivo y el modo de apertura, devuelve none si no existe
+    """
+    try:
+        users_archive = open(route, mode)
+    except:
+        users_archive = None
+    return users_archive
+"""
 constantes y variables globales
 """
 debug_mode = False
+
 ARCHIVE_END = ['','']
 MAX_LENGHT_PASS = 12
 MIN_LENGHT_PASS = 6
@@ -24,21 +37,10 @@ REGISTER_STATUS_USED = 2 # El usuario ya existia
 REGISTER_STATUS_INVALID_USER = 3 # El usuario no es valido
 REGISTER_STATUS_INVALID_PASS = 4 # La contraseña no es valida
 users_list = []
-
-def obtain_users_archive(route, mode):
-    """
-    recibe una ruta de un archivo y el modo de apertura, devuelve none si no existe
-    """
-    try:
-        users_archive = open(route, mode)
-    except:
-        users_archive = None
-
-    if debug_mode:
-        print(users_archive)
-    return users_archive
-
 users_archive = obtain_users_archive('users.csv','r+')
+
+
+
 
 def obtain_line(archive):
     """
@@ -174,12 +176,7 @@ def login_users(tuple):
         result = LOGIN_STATUS_MAX
     return result
 
-def play_button():
-    """
-    toma a los jugadores logueados
-    """
-    #command = lambda: [root.destroy(), users_archive.close(), random.shuffle(users)]
-    
+ 
 #if debug_mode:
     #print(check_user_exist('emilio'))
     #print(check_user_exist('emil'))
@@ -193,15 +190,11 @@ def play_button():
     #print(check_user_pass(('jorge1', 'pruebaconpassincorrecta')))
     #print(register_user_pass(('cenii','bocayoteamo')))
     #print(register_user_pass(('valentino-ceniceros','Valido1#')))
+    #print(register_user_pass(('emilio','Valido1#')))#devolvera 1
+    #print(register_user_pass(('lucas-aldonate','Valido1!')))#devolvera 1
+    #print(register_user_pass(('emilio','Valido1!')))#devolvera 2
+    #print(register_user_pass(('emilio0147@','Valido1#')))#devolvera 3
+    #print(register_user_pass(('emilio-ontiveros','Valido1@')))#devolvera 4
 
-#print(register_user_pass(('emilio','Valido1#')))#devolvera 1
-#print(register_user_pass(('lucas-aldonate','Valido1!')))#devolvera 1
-#print(register_user_pass(('emilio','Valido1!')))#devolvera 2
-#print(register_user_pass(('emilio0147@','Valido1#')))#devolvera 3
-#print(register_user_pass(('emilio-ontiveros','Valido1@')))#devolvera 4
 
-#def main():
- #   login = check_user_pass()
-  #  registe = register_user_pass()
-#main()
 
