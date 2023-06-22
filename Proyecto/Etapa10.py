@@ -43,7 +43,7 @@ def obtain_line(config_file):
         result = line.rstrip().split(',')
     return result
 
-def set_game_config():
+def set_game_config(config_file):
     '''
     Esta es la funcion principal de la Etapa10. Se encarga de armar la configuracion que se va a utilizar
     en la partida. 
@@ -52,7 +52,6 @@ def set_game_config():
     si fue agregado por configuracion o por omision.
     '''
     game_config = {} # DICCIONARIO QUE VA A CONTENER LA CONFIGURACION DE LA PARTIDA
-    config_file = check_config_file('configuracion.csv')
     if config_file: # SI EL ARCHIVO EXISTE, SE PROCEDE A ARMAR EL DICCIONARIO CON LA CONFIGURACION DE LA PARTIDA
         line = obtain_line(config_file)
         while line != END_OF_CONFIG_FILE:
@@ -78,6 +77,7 @@ def print_game_config(game_config):
     for key in keys:
         print(f'{key} = {game_config[key][VALUE]} -> obtenida por {game_config[key][STATUS]}')
 
-game_config = set_game_config()
+config_file = check_config_file('configuracion.csv')
+game_config = set_game_config(config_file)
 #print_game_config(game_config)
 

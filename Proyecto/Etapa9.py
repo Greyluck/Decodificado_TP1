@@ -292,7 +292,7 @@ def play_new_rosco(players):
     Funcionalidad: MAIN DE ETAPA9. Setea configuracion,
     Return: Void
     '''
-    Etapa10.print_game_config(Etapa10.set_game_config())
+    Etapa10.print_game_config(Etapa10.game_config)
     run_full_game(players)
 
 def main_etapa9(): 
