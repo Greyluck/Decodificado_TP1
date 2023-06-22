@@ -19,14 +19,14 @@ STATUS = 1 # REPRESENTA EL INDICE DEL ESTADO DE COMO FUERON OBTENIDOS LOS VALORE
 
 # FUNCIONES
 
-def check_config_file(rute, mode = 'r'):
+def check_config_file(route, mode = 'r'):
     '''
     Esta funcion recibe como parametros la ruta del archivo de configuracion y establece el modo de solo lectura.
     Se encarga de corroborar que el archivo exista para poder utilizarlo.
     En caso de existir devuelve dicho archivo abierto, caso contrario devuelve un booleano 'None'
     '''
     try:
-        config_file = open(rute, mode)
+        config_file = open(route, mode)
     except:
         config_file = None
     return config_file
