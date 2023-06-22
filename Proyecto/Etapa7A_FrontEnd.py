@@ -33,7 +33,6 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
 
     # Root
     bg_root = COLOR_MARRON   #Borde exterior
-    padding = 5
 
     # Otros
     bd_generic = 0
@@ -43,8 +42,9 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
     # -----------------------------------------------------------------------------------------------
     """ El root contiene los frames. Cada frame es una seccion donde ingresaremos elementos tales como labels y botones"""
     root = Tk()                                       # Creamos la raiz
-    root.title ("El rosco")                         # Le damos titulo a la ventana
-    root.iconbitmap("Talisman.ico")                 # Determinamos el icono que utilizara la ventana
+    root.title ("El rosco")                           # Le damos titulo a la ventana
+    root.iconbitmap("Decodificado.ico")               # Determinamos el icono que utilizara la ventana
+
     # -----------------------------
     # Definiciones de tamaño
     # -----------------------------
@@ -84,8 +84,11 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
     # NOTA: 
     #  - Una forma de agregar un label rapidamente es: Label(my_frame,text="Texto de prueba").place(x=50,y=50)
     #  - Otra forma es: nombreDelLabel = Label(contenedor,opciones) y luego ir agregando los valores necesarios 
-    myLabel = Label(my_frame_0,text="El Rosco", font=("Times New roman",22,"bold"), fg='PURPLE')
-    myLabel.grid(row=0,column=0)
+    imagen_rosco=PhotoImage(file="Rosco.png")
+    title_Label = Label(my_frame_0,image=imagen_rosco)
+    #title_Label = Label(my_frame_0,text="El Rosco", font=("Times New roman",22,"bold"), fg='PURPLE')
+    title_Label.grid(row=0,column=0)
+        
 
     # Texto de informacion # TODO: Por algun motivo solo aparece en la pantalla principal... incluso si borro el IF. Revisar
     if current_menu==MENU_VALUE_MAIN_MENU:
@@ -109,7 +112,7 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
     # Seteamos las configuraciones tales como tamaño y background (Para el frame)
     my_frame.config(height=200,width=200)            # El tamaño del frame
     my_frame.config(padx=padding,pady=padding)       # El padding son los "margenes", estan definidos arriba
-    my_frame.config(bg="#f7f2e1")                    # Color de fondo
+    #my_frame.config(bg="#f7f2e1")                    # Color de fondo
     my_frame.config(cursor="hand2")                  # Tipo de cursor que usa sobre el frame
     my_frame.config(bd=bd_generic)                            # Tamaño/grosor del borde
     my_frame.config(relief="groove")                 # El tipo de borde
@@ -137,7 +140,7 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
         # Creo un segundo frame para centrar el boton.
         my_frame2=Frame(my_main_frame)
         my_frame2.grid(row=2,column=0)
-        my_frame2.config(height=200,width=200, padx=padding, pady=padding, bg="#f7f2e1", bd=bd_generic, relief="groove")
+        my_frame2.config(height=200,width=200, padx=padding, pady=padding, bd=bd_generic, relief="groove")
         create_user_button  = Button (my_frame2, text="Crear usuario", command=lambda:create_new_user(user_input.get(),pass1_input.get(),pass2_input.get())).grid(row=8,column=0)
 
     elif current_menu == MENU_VALUE_MAIN_MENU:     # Menu de inicio
@@ -147,7 +150,7 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
         # El frame 3 esta se usa para los users
         my_frame3=Frame(my_main_frame)
         my_frame3.grid(row=3,column=0)
-        my_frame3.config(height=200,width=200, padx=padding, pady=padding, bg="#f7f2e1", bd=2, relief="groove")
+        my_frame3.config(height=200,width=200, padx=padding, pady=padding, bd=2, relief="groove")
     
         # -----------------------------
         # GRID ------------------------
@@ -188,15 +191,21 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
     # Se usa para las cosas que van abajo de todo centradas (La firma por ejemplo)
     my_frame4=Frame(my_main_frame)
     my_frame4.grid(row=9,column=0)
-    my_frame4.config(height=200,width=200, padx=padding, pady=padding, bg="#f7f2e1", relief="groove")
-
+    my_frame4.config(height=200,width=200, padx=padding, pady=padding, relief="groove")
+    
+    imagen_equipo=PhotoImage(file="Decodificado titulo.png")
+    team_Label = Label(my_frame4,image=imagen_equipo)
+    team_Label.grid(row=3,column=0)
+    
     def play_game():
-        Etapa7B_Backend.users_archive.close()
-        root.destroy()
-        Etapa9.play_new_rosco(Etapa7B_Backend.users_list)
+        if len(Etapa7B_Backend.users_list)>0:
+            Etapa7B_Backend.users_archive.close()
+            root.destroy()
+            Etapa9.play_new_rosco(Etapa7B_Backend.users_list)
+        else: show_pop_up("Ingrese al menos un jugador")
     play_button = Button (my_frame4, text="Jugar!", command=lambda: play_game()).grid(row=0,column=0)
 
-    Label(my_frame4,text="Creado por Decodificado", font=("Times New roman",10,"bold italic")).grid(row=1,column=0,sticky="w") 
+    Label(my_frame4,text="Creado por el equipo", font=("Times New roman",10,"bold italic")).grid(row=2,column=0,sticky="w") 
 
     # -----------------------------
     # LOOP ------------------------
@@ -240,13 +249,14 @@ def login_with_user(info_text,user,password,user_grid):
     if debug_mode: (print("Se hizo click en login"))
     if user=="": show_pop_up("Usuario vacio")
     elif password=="": show_pop_up("Contraseña vacia")
+    elif len(Etapa7B_Backend.users_list)>=4: show_pop_up("Se alcanzo el maximo de jugadores")
     else:
         logged_user_tuple = (user,password)
         resultado_del_login = Etapa7B_Backend.login_users(logged_user_tuple)
         
         if resultado_del_login == Etapa7B_Backend.LOGIN_STATUS_OK:
-            show_pop_up("Se loggeo el jugador")
             info_text.set("Se loggeo el jugador.")
+            show_pop_up("Se loggeo el jugador")
             cantidad_de_jugadores = len(Etapa7B_Backend.users_list)
             if debug_mode: print("La cantidad de jugadores es de",len(Etapa7B_Backend.users_list))
             user_grid[cantidad_de_jugadores-1].set(user)
