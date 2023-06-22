@@ -87,16 +87,60 @@ def spanish_sort(random_words):
     #print(result)
     LENGTH = len(result)
     
-    if result[LENGTH - 1][0] == 'ñ':
-        # Encontrar posicion de ñ
-        position = LENGTH - 2
-        while position > 0 and result[position][0] > 'n':
-            position -= 1
+    # MIENTRAS HAYA LETRAS DESORDENADAS POR SER CARACTERE
+    index = LENGTH - 1
+    while index > 0 and result[index][0] in ('ñ','á','é','í','ó','ú'):
+        if result[index][0] == 'ñ':
+            # Encontrar posicion de ñ
+            position = LENGTH - 2
+            while position > 0 and result[position][0] > 'n':
+                position -= 1
 
-        # Corregir posicion
-        result.insert(position, result.pop())
+            # Corregir posicion
+            result.insert(position, result.pop(index))
+        elif result[index][0] == 'á':
+            # Encontrar posicion de ñ
+            position = LENGTH - 2
+            while position > 0 and result[position][0] > 'a':
+                position -= 1
+
+            # Corregir posicion
+            result.insert(position, result.pop(index))
+        elif result[index][0] == 'é':
+            # Encontrar posicion de ►
+            position = LENGTH - 2
+            while position > 0 and result[position][0] > 'e':
+                position -= 1
+
+            # Corregir posicion
+            result.insert(position, result.pop(index))
+        elif result[index][0] == 'í':
+            # Encontrar posicion de í
+            position = LENGTH - 2
+            while position > 0 and result[position][0] > 'i':
+                position -= 1
+
+            # Corregir posicion
+            result.insert(position, result.pop(index))
+        elif result[index][0] == 'ó':
+            # Encontrar posicion de ó
+            position = LENGTH - 2
+            while position > 0 and result[position][0] > 'o':
+                position -= 1
+
+            # Corregir posicion
+            result.insert(position, result.pop(index))
+        elif result[index][0] == 'ú':
+            # Encontrar posicion de ú
+            position = LENGTH - 2
+            while position > 0 and result[position][0] > 'u':
+                position -= 1
+
+            # Corregir posicion
+            result.insert(position, result.pop(index))
         
     return result
+
 
 def return_random_letters(letters):
     '''
