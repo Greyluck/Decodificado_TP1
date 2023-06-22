@@ -5,7 +5,8 @@
 # -----------------------------------------------------------------------------------------------
 # Imports
 # -----------------------------------------------------------------------------------------------
-from tkinter import *  
+from tkinter import *
+from tkinter import messagebox  
 import Etapa7B_Backend
 import Etapa9
 
@@ -129,7 +130,7 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
     player_name_entry = Entry(my_frame, text=user_input).grid(row=2,column=1,sticky="w") 
 
     Label(my_frame,text="Contraseña").grid(row=3,column=0,sticky="w") 
-    player_password_entry  = Entry(my_frame, text=pass1_input).grid(row=3,column=1,sticky="w") 
+    player_password_entry  = Entry(my_frame, text=pass1_input,show="*").grid(row=3,column=1,sticky="w") 
 
     if current_menu == MENU_VALUE_USER_CREATION:  # Menu de creacion de usuario
         Label(my_frame,text="Verifique contraseña").grid(row=4,column=0,sticky="w") 
@@ -208,6 +209,7 @@ def create_new_user (user_value="",pass_value="",pass_v_value=""):
         status = Etapa7B_Backend.register_user_pass(tuple)
         if status == Etapa7B_Backend.REGISTER_STATUS_OK:
             show_pop_up("Usuario creado con exito")
+            messagebox.Message(master=None)
         if status == Etapa7B_Backend.REGISTER_STATUS_USED:
             show_pop_up("Usuario ya existente, intente de nuevo")
         if status == Etapa7B_Backend.REGISTER_STATUS_INVALID_USER:
