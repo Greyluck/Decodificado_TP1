@@ -18,24 +18,24 @@ MENU_VALUE_PLAYING_GAME = 2             #   2) Jugando
 # Debug Mode
 debug_mode = True
 
+# -----------------------------------------------------------------------------------------------
+# Variables y constantes
+# -----------------------------------------------------------------------------------------------
+# Padding generico que sera usado para todo.
+padding = 2
+
+# Colores
+COLOR_CREMA  = "#e0d3a6"
+COLOR_MARRON = "#473722"
+
+# Root
+bg_root = COLOR_MARRON   #Borde exterior
+
+# Otros
+bd_generic = 0
+
 def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
     """ Crea un GUI (Game User Interface). Sino se le pasa ningun parametro asume que es el main menu"""
-
-    # -----------------------------------------------------------------------------------------------
-    # Variables y constantes
-    # -----------------------------------------------------------------------------------------------
-    # Padding generico que sera usado para todo.
-    padding = 2
-
-    # Colores
-    COLOR_CREMA  = "#e0d3a6"
-    COLOR_MARRON = "#473722"
-
-    # Root
-    bg_root = COLOR_MARRON   #Borde exterior
-
-    # Otros
-    bd_generic = 0
 
     # -----------------------------------------------------------------------------------------------
     # ROOT ------------------------------------------------------------------------------------------
@@ -72,97 +72,77 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
     my_main_frame.grid(row=0,column=0)
 
     # ---------------------------------------------------------------------------------------------
-    # FRAME 0 -------------------------------------------------------------------------------------
+    # FRAMES --------------------------------------------------------------------------------------
     # ---------------------------------------------------------------------------------------------
-    """ Se va a usar para titulos y demas"""
+    # Se crearan 4 frames para el GUI:
+    # Frame 0: Se va a usar para titulos y logo
     my_frame_0 = Frame(my_main_frame)                   # Creamos un frame
     my_frame_0.grid(row=0,column=0)                     # Seteamos las configuraciones de posicion. 
 
-    # -----------------------------
-    # LABEL -----------------------
-    # -----------------------------
-    # NOTA: 
-    #  - Una forma de agregar un label rapidamente es: Label(my_frame,text="Texto de prueba").place(x=50,y=50)
-    #  - Otra forma es: nombreDelLabel = Label(contenedor,opciones) y luego ir agregando los valores necesarios 
-    imagen_rosco=PhotoImage(file="Rosco.png")
-    #title_Label = Label(my_frame_0,image=imagen_rosco)
-    title_Label = Label(my_frame_0,text="El Rosco", font=("Times New roman",22,"bold"), fg='PURPLE')
-    title_Label.grid(row=0,column=0)
-        
+    # Frame 1: Se va a usar para usuario y contraseña
+    my_frame = Frame(my_main_frame)                     # Creamos un frame
+    my_frame.grid(row=1,column=0)                       # Seteamos las configuraciones de posicion. 
 
-    # Texto de informacion # TODO: Por algun motivo solo aparece en la pantalla principal... incluso si borro el IF. Revisar
-    if current_menu==MENU_VALUE_MAIN_MENU:
+    # Frame 2: Se usa para colocar el boton de creacion de usuario o la grilla de usuarios logeados
+    my_frame2=Frame(my_main_frame)
+    my_frame2.grid(row=2,column=0)
+    my_frame2.config(height=200,width=200, padx=padding, pady=padding, bd=bd_generic, relief="groove")
+        
+    # Frame 3: Se usa para las cosas que van abajo de todo centradas (La firma por ejemplo)
+    my_frame3=Frame(my_main_frame)
+    my_frame3.grid(row=9,column=0)
+    my_frame3.config(height=200,width=200, padx=padding, pady=padding, relief="groove")
+    
+    # ---------------------------------------------------------------------------------------------
+    # FRAME 0 -------------------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------
+    if current_menu == MENU_VALUE_MAIN_MENU: 
+        imagen_rosco=PhotoImage(file="Rosco.png")
+        title_Label = Label(my_frame_0,image=imagen_rosco)
         info_text = StringVar()
         info_text.set("TIP: Ingrese el usuario")
         label_of_info_text = Label(my_frame_0,textvariable=info_text).grid(row=1,column=0) 
-
+    else: 
+        title_Label = Label(my_frame_0,text="El Rosco", font=("Times New roman",22,"bold"), fg='PURPLE')
+    title_Label.grid(row=0,column=0)
+        
     # ---------------------------------------------------------------------------------------------
     # FRAME 1 -------------------------------------------------------------------------------------
     # ---------------------------------------------------------------------------------------------
-    my_frame = Frame(my_main_frame)                     # Creamos un frame
-    my_frame.grid(row=1,column=0)                       # Seteamos las configuraciones de posicion. 
-    # Para la posicion de las cosas se pueden usar PACK, PLACE o GRID. En teoria no habria que mesclarlas
-    #   - myLabel.grid(row=0,column=0)  <-- Utiliza una tabla o grilla de columnas y filas
-    #   - myLabel.place(x=1,y=1)        <-- El label se adatara al contenedor
-    #   - myLabel.pack()                <-- El contenedor se adaptara al texto
-    #       - my_frame.pack(anchor="n")  <- De esta forma se alinea por PX
-    #       - Side define la alineacion clasica. Anchor usa cardinales "N,W,S,E"
-    #       - my_frame.pack(fill="center", expand=True) Se utiliza para que el frame se adapte al tamaño en pantalla automaticamente al expandirla
-
-    # Seteamos las configuraciones tales como tamaño y background (Para el frame)
-    my_frame.config(height=200,width=200)            # El tamaño del frame
-    my_frame.config(padx=padding,pady=padding)       # El padding son los "margenes", estan definidos arriba
-    #my_frame.config(bg="#f7f2e1")                    # Color de fondo
-    my_frame.config(cursor="hand2")                  # Tipo de cursor que usa sobre el frame
-    my_frame.config(bd=bd_generic)                            # Tamaño/grosor del borde
-    my_frame.config(relief="groove")                 # El tipo de borde
-
-    # -----------------------------
-    # GRID ------------------------
-    # -----------------------------
-    """ Estoy usando una grilla, en la cual agrego los elementos."""
-
     # Los inputs deben usar un string var para extraerlos con facilidad.
-    user_input = StringVar(my_frame)
+    user_input  = StringVar(my_frame)
     pass1_input = StringVar(my_frame)
     pass2_input = StringVar(my_frame)
 
+    COLUMNA_NOMBRE_DE_CAMPO = 0
+    COLUMNA_CAMPOS_A_LLENAR = 1
+    FILA_USER = 2
+    FILA_PASS = 3
+    FILA_PASS_VERIFICATION = 4
 
-    Label(my_frame,text="Jugador").grid(row=2,column=0,sticky="w") 
-    player_name_entry = Entry(my_frame, text=user_input).grid(row=2,column=1,sticky="w") 
+    Label(my_frame,text="Jugador").grid(row=2,column=COLUMNA_NOMBRE_DE_CAMPO,sticky="w") 
+    player_name_entry = Entry(my_frame, text=user_input).grid(row=FILA_USER,column=COLUMNA_CAMPOS_A_LLENAR,sticky="w") 
 
-    Label(my_frame,text="Contraseña").grid(row=3,column=0,sticky="w") 
-    player_password_entry  = Entry(my_frame, text=pass1_input,show="*").grid(row=3,column=1,sticky="w") 
+    Label(my_frame,text="Contraseña").grid(row=3,column=COLUMNA_NOMBRE_DE_CAMPO,sticky="w") 
+    player_password_entry  = Entry(my_frame, text=pass1_input,show="*").grid(row=FILA_PASS,column=COLUMNA_CAMPOS_A_LLENAR,sticky="w") 
 
     if current_menu == MENU_VALUE_USER_CREATION:  # Menu de creacion de usuario
-        Label(my_frame,text="Verifique contraseña").grid(row=4,column=0,sticky="w") 
-        player_password_verification_entry  = Entry(my_frame, text=pass2_input).grid(row=4,column=1,sticky="w") 
-        # Creo un segundo frame para centrar el boton.
-        my_frame2=Frame(my_main_frame)
-        my_frame2.grid(row=2,column=0)
-        my_frame2.config(height=200,width=200, padx=padding, pady=padding, bd=bd_generic, relief="groove")
+        # Frame 1
+        Label(my_frame,text="Verifique contraseña").grid(row=FILA_PASS_VERIFICATION,column=COLUMNA_NOMBRE_DE_CAMPO,sticky="w") 
+        player_password_verification_entry  = Entry(my_frame, text=pass2_input, show = "*").grid(row=FILA_PASS_VERIFICATION,column=COLUMNA_CAMPOS_A_LLENAR,sticky="w") 
+
+        # Frame 2
         create_user_button  = Button (my_frame2, text="Crear usuario", command=lambda:create_new_user(user_input.get(),pass1_input.get(),pass2_input.get())).grid(row=8,column=0)
 
     elif current_menu == MENU_VALUE_MAIN_MENU:     # Menu de inicio
-        # ---------------------------------------------------------------------------------------------
-        # FRAME 3 -------------------------------------------------------------------------------------
-        # ---------------------------------------------------------------------------------------------
-        # El frame 3 esta se usa para los users
-        my_frame3=Frame(my_main_frame)
-        my_frame3.grid(row=3,column=0)
-        my_frame3.config(height=200,width=200, padx=padding, pady=padding, bd=2, relief="groove")
-    
-        # -----------------------------
-        # GRID ------------------------
-        # -----------------------------
-        # Estoy usando una grilla, en la cual agrego los elementos.
+        # Frame 2 - Estoy usando una grilla, en la cual agrego los elementos.
         user_font       = ("Times New roman",10,"bold")
         user_name_font  = ("Arial",10,"italic")
 
-        player1 = Label(my_frame3,text="Jugador 1:", font=user_font, fg='RED').grid(row=1,column=0,sticky="w") 
-        player2 = Label(my_frame3,text="Jugador 2:", font=user_font, fg='BLUE').grid(row=2,column=0,sticky="w") 
-        player3 = Label(my_frame3,text="Jugador 3:", font=user_font, fg='ORANGE').grid(row=3,column=0,sticky="w") 
-        player4 = Label(my_frame3,text="Jugador 4:", font=user_font, fg='GREEN').grid(row=4,column=0,sticky="w") 
+        player1 = Label(my_frame2,text="Jugador 1:", font=user_font, fg='RED').grid(row=1,column=0,sticky="w") 
+        player2 = Label(my_frame2,text="Jugador 2:", font=user_font, fg='BLUE').grid(row=2,column=0,sticky="w") 
+        player3 = Label(my_frame2,text="Jugador 3:", font=user_font, fg='ORANGE').grid(row=3,column=0,sticky="w") 
+        player4 = Label(my_frame2,text="Jugador 4:", font=user_font, fg='GREEN').grid(row=4,column=0,sticky="w") 
         
         player1_name = StringVar()
         player1_name.set("Disponible")
@@ -173,11 +153,12 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
         player4_name = StringVar()
         player4_name.set("Disponible")
 
-        player1_label = Label(my_frame3,textvariable=player1_name, font=user_name_font, fg='RED').grid(row=1,column=1,sticky="w") 
-        player2_label = Label(my_frame3,textvariable=player2_name, font=user_name_font, fg='BLUE').grid(row=2,column=1,sticky="w") 
-        player3_label = Label(my_frame3,textvariable=player3_name, font=user_name_font, fg='ORANGE').grid(row=3,column=1,sticky="w") 
-        player4_label = Label(my_frame3,textvariable=player4_name, font=user_name_font, fg='GREEN').grid(row=4,column=1,sticky="w") 
+        player1_label = Label(my_frame2,textvariable=player1_name, font=user_name_font, fg='RED').grid(row=1,column=1,sticky="w") 
+        player2_label = Label(my_frame2,textvariable=player2_name, font=user_name_font, fg='BLUE').grid(row=2,column=1,sticky="w") 
+        player3_label = Label(my_frame2,textvariable=player3_name, font=user_name_font, fg='ORANGE').grid(row=3,column=1,sticky="w") 
+        player4_label = Label(my_frame2,textvariable=player4_name, font=user_name_font, fg='GREEN').grid(row=4,column=1,sticky="w") 
 
+        play_button = Button (my_frame2, text="Jugar!", command=lambda: play_game()).grid(row=9,column=0,columnspan=2)
         # -----------------------------
         # Botones ---------------------
         # -----------------------------
@@ -188,26 +169,21 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
     # ---------------------------------------------------------------------------------------------
     # FRAME FINAL -------------------------------------------------------------------------------------
     # ---------------------------------------------------------------------------------------------
-    # Se usa para las cosas que van abajo de todo centradas (La firma por ejemplo)
-    my_frame4=Frame(my_main_frame)
-    my_frame4.grid(row=9,column=0)
-    my_frame4.config(height=200,width=200, padx=padding, pady=padding, relief="groove")
-    
-    # TODO Agregar la imagen cuando se cree la segunda GUI
-    #imagen_equipo=PhotoImage(file="Decodificado titulo.png")
-    #team_Label = Label(my_frame4,image=imagen_equipo)
-    #team_Label.grid(row=3,column=0)
-    
+    if current_menu == MENU_VALUE_MAIN_MENU: 
+        Label(my_frame3,text="Creado por el equipo", font=("Times New roman",10,"bold italic")).grid(row=2,column=0,sticky="w") 
+        imagen_equipo=PhotoImage(file="Decodificado titulo.png")
+        team_Label = Label(my_frame3,image=imagen_equipo)
+        team_Label.grid(row=3,column=0)
+    else:
+        Label(my_frame3,text="Creado por decodificado", font=("Times New roman",8,"bold italic")).grid(row=2,column=0,sticky="w") 
+        
     def play_game():
         if len(Etapa7B_Backend.users_list)>0:
             Etapa7B_Backend.users_archive.close()
             root.destroy()
             Etapa9.play_new_rosco(Etapa7B_Backend.users_list)
         else: show_pop_up("Ingrese al menos un jugador")
-    play_button = Button (my_frame4, text="Jugar!", command=lambda: play_game()).grid(row=0,column=0)
-
-    Label(my_frame4,text="Creado por Decodificado", font=("Times New roman",10,"bold italic")).grid(row=2,column=0,sticky="w") 
-
+    
     # -----------------------------
     # LOOP ------------------------
     # -----------------------------
@@ -215,7 +191,7 @@ def create_GUI(current_menu=MENU_VALUE_MAIN_MENU):
     root.mainloop()
 
 def create_new_user_GUI():
-    """ Llama a la funcion de crear un GUI, pero para creacion de usuario"""
+    """Crea una gui de creacion de usuario"""
     create_GUI(MENU_VALUE_USER_CREATION)
     
 def create_new_user (user_value="",pass_value="",pass_v_value=""):
@@ -223,7 +199,7 @@ def create_new_user (user_value="",pass_value="",pass_v_value=""):
     if debug_mode: print("Usuario:",user_value,"Password:",pass_value,"|",pass_v_value)
 
     # Verifica que se cumplan las condiciones basicas para enviar la tupla usuario clave
-    if user_value!="": show_pop_up("Usuario vacio")
+    if user_value=="": show_pop_up("Usuario vacio")
     elif pass_v_value=="": show_pop_up("Contraseña vacia")
     elif pass_v_value != pass_value: show_pop_up("Las contraseñas no coinciden")
     else:
@@ -238,9 +214,9 @@ def create_new_user (user_value="",pass_value="",pass_v_value=""):
         if status == Etapa7B_Backend.REGISTER_STATUS_USED:
             show_pop_up("Usuario ya existente, intente de nuevo")
         if status == Etapa7B_Backend.REGISTER_STATUS_INVALID_USER:
-            show_pop_up("Usuario invalido, intente de nuevo")
+            show_pop_up("Usuario invalido, el usuario debe:\n  - Tener una longitud entre 4 y 20 caracteres\n  - Estar formado solo por letras, numeros y el guion medio")
         if status == Etapa7B_Backend.REGISTER_STATUS_INVALID_PASS:
-            show_pop_up("Password invalido, intente de nuevo")
+            show_pop_up("Contraseña invalida, la contrasenia debe:\n  - Tener una longitud entre 6 y 12 caracteres\n  - Contener caracteres alfanumericos, a excepcion de letras acentuadas y los caracteres '#','!'\n- Debe contener una letra mayuscula, una minuscula, un numero y alguno de los siguientes caracteres: '#' '!'")
 
 def show_pop_up(pop_up_text):
     messagebox.showinfo(title=None, message=pop_up_text)
