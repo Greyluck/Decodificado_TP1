@@ -1,3 +1,6 @@
+"""Etapa 10: Archivo de Configuración"""
+# El responsable de esta etapa es Lucas Aldonate.
+
 # VALORES DE CONFIGURACION POR DEFECTO
 
 DEFAULT_CONFIG = {
@@ -76,5 +79,5 @@ def print_game_config(game_config):
         print(f'{key} = {game_config[key][VALUE]} -> obtenida por {game_config[key][STATUS]}')
 
 game_config = set_game_config()
-
+#print_game_config(game_config)
 
