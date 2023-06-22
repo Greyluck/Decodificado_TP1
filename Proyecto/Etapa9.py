@@ -11,6 +11,7 @@ import Etapa8
 import Etapa10  # TP2 - Configuracion del juego
 
 import random
+import os
 
 from datos import obtener_lista_definiciones
 
@@ -178,6 +179,7 @@ def run_match(words_dict, words, random_letters, players):
         print_board(board, words, words_dict, players)
         # Solicitar palabra y agregar resultado
         word = Etapa1.validate_lenght_and_grammar(Etapa1.ask_for_word(), len(words[turns])) # VERIFICA LA PALABRA DEPENDIENDO DEL LARGO DE LA PALABRA EN EL TURNO ACTUAL
+        os.system('cls')
         add_answer(board, word, words, turns, players)
 
     # Resultado final 
@@ -241,6 +243,9 @@ def run_full_game(players):
 
         games_played += 1
         play_game = check_and_ask_for_another_game(games_played)
+        os.system('cls')
+
+    os.system('cls')
 
     print_points(total_points, players, games_played)
     print('-------------------------------------------')
@@ -292,7 +297,10 @@ def play_new_rosco(players):
     Funcionalidad: MAIN DE ETAPA9. Setea configuracion,
     Return: Void
     '''
+    os.system('cls')
     Etapa10.print_game_config(Etapa10.game_config)
+    input('\n\nPresione enter para empezar! ')
+    os.system('cls')
     run_full_game(players)
 
 def main_etapa9(): 
