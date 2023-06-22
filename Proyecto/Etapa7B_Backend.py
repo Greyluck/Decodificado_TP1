@@ -1,4 +1,16 @@
 """
+funcion para abrir archivos
+"""
+def obtain_users_archive(route, mode):
+    """
+    recibe una ruta de un archivo y el modo de apertura, devuelve none si no existe
+    """
+    try:
+        users_archive = open(route, mode)
+    except:
+        users_archive = None
+    return users_archive
+"""
 constantes y variables globales
 """
 debug_mode = False
@@ -25,21 +37,10 @@ REGISTER_STATUS_USED = 2 # El usuario ya existia
 REGISTER_STATUS_INVALID_USER = 3 # El usuario no es valido
 REGISTER_STATUS_INVALID_PASS = 4 # La contraseña no es valida
 users_list = []
-
-def obtain_users_archive(route, mode):
-    """
-    recibe una ruta de un archivo y el modo de apertura, devuelve none si no existe
-    """
-    try:
-        users_archive = open(route, mode)
-    except:
-        users_archive = None
-
-    if debug_mode:
-        print(users_archive)
-    return users_archive
-
 users_archive = obtain_users_archive('users.csv','r+')
+
+
+
 
 def obtain_line(archive):
     """
