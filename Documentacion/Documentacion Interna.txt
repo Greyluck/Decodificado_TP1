@@ -12,19 +12,24 @@ Estructura:
 	- Una carpeta de proyecto
 	- Una carpeta para la documentacion.
 
-La lista de etapas
+La lista de etapas parte 1
 	Etapa N - Nombre de etapa: 	Creador   | Verificador
 	Etapa 1 - Interacción: 		Lucas	  | Valentino
 	Etapa 2 - Diccionario: 		Tomy 	  | Lucas
-	Etapa 3 - Rosco: 		Santi 	  | Tomy
+	Etapa 3 - Rosco: 			Santi 	  | Tomy
 	Etapa 4 - Integracion: 		Emilio	  | Santi
-	Etapa 5 - Puntaje: 		Valentino | Emilio
-	Etapa 6 - Refactor: 		Compartido
-	Etapa 7 - Registro jugadores: 	Valentino | Emilio
+	Etapa 5 - Puntaje: 			Valentino | Emilio
+	Pruebas unitarias:			Emilio	  | Todos
+
+
+La lista de etapas parte 2
+	Etapa 6 - Refactor: 			Compartido
+		- Etapa 1: Pasaje de argumentos a funciones (modificaciones en etapa9)
+		- Etapa 3: Agrega letras si y solo si existen palabras que cumplan con el largo especificado
+	Etapa 7 - Registro jugadores: 	Valentino y Emilio
 	Etapa 8 - Archivos de texto:	Tomy
 	Etapa 9 - Dinámica de juego:	Santi
 	Etapa A - Archivo de config: 	Lucas
+	Pruebas unitarias:				Emilio y Lucas
 
-Refactor:
-- Etapa 1: Pasaje de argumentos a funciones (modificaciones en etapa9)
-- Etapa 3: Agrega letras si y solo si existen palabras que cumplan con el largo especificado
+

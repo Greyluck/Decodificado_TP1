@@ -11,14 +11,15 @@ def show_letterboard(random_letters):
     letters_list = [f'[{n.upper()}]' for n in random_letters]
     return letters_list
 
-def print_board(letters_in_board, results_in_board, success, mistake, letters_list, turns, words, words_dict):
+def print_board(board, turns, words, words_dict):
     '''
-    Esta funcion recibe como parametros los datos que se imprimen en el tablero (letras y cuadros de aciertos/errores), enteros que representan
-    la cantidad de dichos aciertos y errores, la lista de letras, el numero de turno actual, la lista de palabras y el diccionario palabras|definiciones,
+    Esta funcion recibe como parametros un diccionario (board) con los datos que se imprimen en el tablero (letras y cuadros de aciertos/errores), enteros que representan
+    la cantidad de dichos aciertos y errores, la lista de letras; y ademas recibe el numero de turno actual, la lista de palabras y el diccionario palabras|definiciones,
     los cuales utiliza para imprimir el tablero que muestra los detalles de la partida en cada turno
     '''
     print('{}\n{}\n\nAciertos: {}\nErrores: {}\nTurno letra {} - Palabra de {} letras\nDefinicion: {}'.format(
-        letters_in_board, results_in_board, success, mistake, letters_list[turns][1], len(words[turns]), words_dict[words[turns]]))
+        board['letters_in_board'], board['results_in_board'], board['success'], board['mistake'],
+        board['letters_list'][turns][1], len(words[turns]), words_dict[words[turns]]))
 
 def ask_for_word():
     '''
@@ -39,25 +40,44 @@ def validate_lenght_and_grammar(string, lenght):
         string = ask_for_word()
     return string
 
-def add_answer(word, actual_letter, correct_word, resultboard, turns_description_list, turns, success, mistake): 
+def add_answer(board, word, actual_letter, correct_word, turns): 
     '''
-    Esta funcion recibe como parametros la palabra y la letra del turno actual, la palabra correcta, la lista de aciertos/errores,
-    la lista de resultados de cada turno, el numero de turno actual y la cantidad de aciertos y errores hasta el momento.
+    Esta funcion recibe como parametros un diccionario que contiene (el tablero de resultados, los contadores de error y acierto y la lista con las descripciones de cada turno jugado), 
+    la palabra y la letra del turno actual, la palabra correcta, el numero de turno actual.
     Se encarga de guardar el resultado de cada turno (acierto/error) con el fin de imprimirlos al final de la partida
     '''
     if word == correct_word:
-        resultboard[turns] = '[a]'
-        success += 1
-        turns_description_list.append('Turno Letra {} - Palabra de {} letras - {} - acierto'.format(
+        board['resultboard'][turns] = '[a]'
+        board['success'] += 1
+        board['turns_description_list'].append('Turno Letra {} - Palabra de {} letras - {} - acierto'.format(
             actual_letter, len(correct_word), word))
         print('Palabra correcta!\n')
     else:
-        resultboard[turns] = '[e]'
-        mistake += 1
-        turns_description_list.append('Turno Letra {} - Palabra de {} letras - {} - error - Palabra Correcta: {}'.format(
+        board['resultboard'][turns] = '[e]'
+        board['mistake'] += 1
+        board['turns_description_list'].append('Turno Letra {} - Palabra de {} letras - {} - error - Palabra Correcta: {}'.format(
             actual_letter, len(correct_word), word, correct_word))
         print(f'Palabra incorrecta - La respuesta correcta era: {correct_word}\n')
-    return success, mistake
+    return board['success'], board['mistake']
+
+def generate_board(letters):
+    '''
+    REFACTORIZACION DE CODIGO (Etap6 - PARTE 2 TP)
+    Esta funcion recibe como parametro la lista de letras elegidas al azar y crea un diccionario que contiene los
+    tableros que se imprimen por pantalla, la lista con las descripciones de cada turno y los contadores de acierto y error.
+
+    * Se utiliza esta funcion que crea el diccionario para que las funciones print_board y add_answer no reciban tantos
+    parametros, ya que estos estaran incluidos en el diccionario board.
+    '''
+    board = {}
+    board['letters_list'] = show_letterboard(letters) # TABLERO DE LETRAS ELEGIDAS AL AZAR
+    turns_per_match = len(letters) 
+    board['resultboard'] = ['[ ]' for n in range(turns_per_match)] # TABLERO DE RESULTADOS 
+    board['success'] = 0  # CONTADOR DE ACIERTOS
+    board['mistake'] = 0  # CONTADOR DE ERRORES
+    board['turns_description_list'] = [] 
+
+    return board
     
 def run_match(words_dict, words, random_letters):
     '''
@@ -68,25 +88,20 @@ def run_match(words_dict, words, random_letters):
     utilizada en la Etapa 5 para calcular los puntajes.
     (Es la funcion principal de la Etapa 1)
     ''' 
-    letters_list = show_letterboard(random_letters) # MUESTRA EL TABLERO DE LETRAS ELEGIDAS AL AZAR
-    turns_per_match = len(letters_list) 
-    resultboard = ['[ ]' for n in range(turns_per_match)] # CREA EL TABLERO DE RESULTADOS
-    turns = 0 # ITERADOR TANTO DE LAS LETRAS COMO DE LA PALABRA EN EL TURNO ACTUAL
-    success = 0 # CONTADOR DE ACIERTOS
-    mistake = 0 # CONTADOR DE ERRORES
-    turns_description_list = []
+    board = generate_board(random_letters) # GENERA EL DICCIONARIO CON LOS RESPECTIVOS PARAMETROS A UTILIZAR
+    turns_per_match = len(random_letters) 
     for turns in range(turns_per_match): # Tambien se podria utilizar while turns < turns_per_match:
-        letters_in_board = ''.join(letters_list)
-        results_in_board = ''.join(resultboard)
-        print_board(letters_in_board, results_in_board, success, mistake, letters_list, turns, words, words_dict)
+        board['letters_in_board'] = ''.join(board['letters_list'])
+        board['results_in_board'] = ''.join(board['resultboard'])
+        print_board(board, turns, words, words_dict)
         word = validate_lenght_and_grammar(ask_for_word(), len(words[turns])) # VERIFICA LA PALABRA DEPENDIENDO DEL LARGO DE LA PALABRA EN EL TURNO ACTUAL
-        success, mistake = add_answer(word, letters_list[turns][1], words[turns], resultboard, turns_description_list, turns, success, mistake)
-    letters_in_board = ''.join(letters_list)
-    results_in_board = ''.join(resultboard)
-    print(f'{letters_in_board}\n{results_in_board}\n\nAciertos: {success}\nErrores: {mistake}') # IMPRIME EL FINAL DE LA PARTIDA ACTUAL
-    for answer in turns_description_list: # IMPRIME EL RESULTADO DE CADA TURNO, CON SUS ACIERTOS Y ERRORES CORRESPONDIENTES
+        board['success'], board['mistake'] = add_answer(board, word, board['letters_list'][turns][1], words[turns], turns)
+    board['letters_in_board'] = ''.join(board['letters_list'])
+    board['results_in_board'] = ''.join(board['resultboard'])
+    print(f'{board["letters_in_board"]}\n{board["results_in_board"]}\n\nAciertos: {board["success"]}\nErrores: {board["mistake"]}') # IMPRIME EL FINAL DE LA PARTIDA ACTUAL
+    for answer in board['turns_description_list']: # IMPRIME EL RESULTADO DE CADA TURNO, CON SUS ACIERTOS Y ERRORES CORRESPONDIENTES
         print(answer)
-    results = (success, mistake)
+    results = (board['success'], board['mistake'])
     return results
 
 def main_etapa1(): 
