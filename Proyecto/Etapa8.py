@@ -1,3 +1,6 @@
+"""Etapa 8: Archivos de Texto"""
+# El responsable de esta etapa es Tomas Galluccio.
+
 import Etapa10 
 #----------------------------------------PALABRAS y DEFINICIONES----------------------------------------------#
 def return_words_and_definition():
