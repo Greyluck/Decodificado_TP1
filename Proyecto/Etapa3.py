@@ -9,7 +9,7 @@ import Etapa2
 import Etapa10
 import Etapa8 
 
-DEBUG_MODE = True
+DEBUG_MODE = False
 DEBUG_TP = 3
 
 def generate_random_letters_and_words(letters, dictionary):
@@ -120,9 +120,11 @@ def spanish_sort(random_words):
     sorted_words = random_words
     sorted_words.sort()
 
+    '''
     if DEBUG_MODE:
         print("Sorted words:",sorted_words)
-
+    '''
+    
     # Se iterara hasta que todas las letras especiales encuentren su posicion
     position = len(sorted_words) - 1
     while position > 0 and sorted_words[position][0] in ('ñ','á','é','í','ó','ú'):
@@ -135,20 +137,21 @@ def spanish_sort(random_words):
     special_words = sorted_words[position + 1::]
     special_words.sort(reverse=True)
 
+    '''
     if DEBUG_MODE:
         print("Normal words:",normal_words)
         print("Special words:",special_words)
-
+    '''
     # Ordenamiento
     # Las letras especiales quedan asi: á,é,í,ñ,ó,ú
     # Se insertaran los caracteres en orden, pero se encontrara su posicion desde el final
     result = normal_words
+    is_ñ_present = False
+    ñ_word = ''
     for word in special_words:
         limite = return_limit_for_spanish_sort(word[0])
         
         # La ñ es un caso completamente patológico (igualmente amamos nuestro idioma)
-        is_ñ_present = False
-        ñ_word = ''
         if word[0] != 'ñ':
             i = 0
             while  i < len(result) and (result[i][0] < limite) :
@@ -159,11 +162,9 @@ def spanish_sort(random_words):
             else:
                 result.append(word)
         else:
-            print("IM HERE")
             is_ñ_present = True
-            ñ_word += word
+            ñ_word = word
     
-    print(ñ_word)
     if is_ñ_present:
         result = correct_ñ_position_tp2(result,ñ_word)
 
@@ -176,9 +177,10 @@ def correct_ñ_position_tp2(words, ñ_word):
         i += 1
     words.insert(i,ñ_word)
 
+    '''
     if DEBUG_MODE:
         print("CHEEEEEEEEEEEEEEEE ",words)
-
+    '''
     return words
 
 def is_ñ_in_correct_position(words,i):
@@ -367,15 +369,24 @@ def main_etapa3():
                     for letter in random_letters:
                         output += ('[' + str(letter) + ']')
                     output += '\n'    
-                    # hotfix.write(output)
+                    hotfix.write(output)
 
                     for word in random_words:
-                        if word[0] in ('á','é','í','ó','ú'):
+                        if word[0] in ('á','é','í','ó','ú','ñ'):
                             print([word[0] for word in random_words])
                             print('PALABRA: ' + word + ' LETRA: ' + word[0])
 
-    else:
+    elif DEBUG_TP == 3:
         #spanish_sort(['útero','ímpetu', 'vaca','árbol','éxtasis','óraculo','ñandú','balde'])
-        spanish_sort(['útero','ímpetu','ñandú','vaca','árbol','éxtasis','óraculo','balde'])
+        caso_3 = ['útero','ímpetu','ñandú','vaca','árbol','éxtasis','óraculo','balde']
+        print("TEST 3\nSe ordenara: {}\n Ordenado:".format(caso_3))
+        print(spanish_sort(caso_3))
+    else:
+        with open("test_palabras.txt",'a+') as end_file:
+            end_file.write("\n\n\n\n\n\nNEWRUN\n\n\n\n\n\n")
+            words_for_file = spanish_sort([word for word in Etapa8.return_words_and_definition().keys() if not word[0] in ('a','e','i','o','u')])
+            for word in words_for_file:
+                output = word + '\n'
+                end_file.write(output)
 
 main_etapa3()
