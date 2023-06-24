@@ -229,7 +229,7 @@ def run_full_game(players):
         partial_points = [0 for n in range(AMOUNT_OF_PLAYERS)]
         if not DEBUG_MODE:
             random_words = Etapa3.generate_random_letters_and_words(Etapa2.ALPHABET, word_dictionary)
-            random_letters = [ word[0] for word in random_words]
+            random_letters = Etapa3.return_first_letter_of_words(random_words)
             '''
             random_letters = Etapa3.return_random_letters(Etapa2.ALPHABET)
             random_words = Etapa3.generate_rosco(word_dictionary,random_letters)
@@ -309,6 +309,6 @@ def main_etapa9():
     '''
     play_new_rosco(['ej1','ej2','ej3'])
 
-#main_etapa9()
+main_etapa9()
 
 

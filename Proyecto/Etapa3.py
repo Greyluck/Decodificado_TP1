@@ -7,8 +7,10 @@ import random
 
 import Etapa2
 import Etapa10
+import Etapa8 
 
 DEBUG_MODE = True
+DEBUG_TP = 3
 
 def generate_random_letters_and_words(letters, dictionary):
     '''
@@ -28,6 +30,7 @@ def generate_random_letters_and_words(letters, dictionary):
     MIN_RANDOM = 0
     MAX_RANDOM_LETTER = len(letters) - 1
     
+    added_letters = []
     for i in range(AMOUNT_OF_LETTERS):
         found_letter = False
         letter = ''
@@ -35,10 +38,11 @@ def generate_random_letters_and_words(letters, dictionary):
 
         # Encontrar letra valida
         while not found_letter:
+            words_that_start_with_letter.clear()
             letter = letters[random.randint(MIN_RANDOM, MAX_RANDOM_LETTER)]
 
             # Si la letra no fue agregada antes y tiene palabras, agregala al resultado
-            if not letter in [ word[0] for word in result ]:
+            if not letter in added_letters:
                 words_that_start_with_letter = return_words_that_start_with_letter(letter,dictionary.keys(),LENGTH)
                 found_letter = ( len(words_that_start_with_letter) != 0 )
 
@@ -46,8 +50,38 @@ def generate_random_letters_and_words(letters, dictionary):
         random_index = random.randint(MIN_RANDOM, len(words_that_start_with_letter) - 1)
         result.append(words_that_start_with_letter[random_index])
 
+        # AÑADIR A LETRAS QUE APÄRECIERON
+        addedd_letters = return_correct_list_of_letters(added_letters, words_that_start_with_letter[random_index][0])
+        '''
+        if DEBUG_MODE:
+            print(addedd_letters)
+        '''
     # print(result)
     return spanish_sort(result)
+
+def return_correct_list_of_letters(letters, letter):
+    result = letters
+
+    if letter == 'á' or letter == 'a':
+        result.append('a')
+        result.append('á')
+    elif letter == 'é' or letter == 'e':
+        result.append('e')
+        result.append('é')
+    elif letter == 'í' or letter == 'i':
+        result.append('i')
+        result.append('í')
+    elif letter == 'ó' or letter == 'o':
+        result.append('o')
+        result.append('ó')
+    elif letter == 'ú' or letter == 'u':
+        result.append('u')
+        result.append('ú')
+    else:            
+        result.append(letter)
+
+    return result
+
 
 def return_words_that_start_with_letter(letter, words, length):
     return [ word for word in words if is_this_word_correct(letter,word,length)]
@@ -82,63 +116,108 @@ def spanish_sort(random_words):
     Return: Misma lista pero con la posicion de la ñ corregida
     Nota: Funcion refactorizada en TP N°2 - Etapa6
     '''
-    result = random_words
-    result.sort()
-    #print(result)
-    LENGTH = len(result)
     
-    # MIENTRAS HAYA LETRAS DESORDENADAS POR SER CARACTERE
-    index = LENGTH - 1
-    while index > 0 and result[index][0] in ('ñ','á','é','í','ó','ú'):
-        if result[index][0] == 'ñ':
-            # Encontrar posicion de ñ
-            position = LENGTH - 2
-            while position > 0 and result[position][0] > 'n':
-                position -= 1
+    sorted_words = random_words
+    sorted_words.sort()
 
-            # Corregir posicion
-            result.insert(position, result.pop(index))
-        elif result[index][0] == 'á':
-            # Encontrar posicion de ñ
-            position = LENGTH - 2
-            while position > 0 and result[position][0] > 'a':
-                position -= 1
+    if DEBUG_MODE:
+        print("Sorted words:",sorted_words)
 
-            # Corregir posicion
-            result.insert(position, result.pop(index))
-        elif result[index][0] == 'é':
-            # Encontrar posicion de ►
-            position = LENGTH - 2
-            while position > 0 and result[position][0] > 'e':
-                position -= 1
+    # Se iterara hasta que todas las letras especiales encuentren su posicion
+    position = len(sorted_words) - 1
+    while position > 0 and sorted_words[position][0] in ('ñ','á','é','í','ó','ú'):
+        position -= 1
 
-            # Corregir posicion
-            result.insert(position, result.pop(index))
-        elif result[index][0] == 'í':
-            # Encontrar posicion de í
-            position = LENGTH - 2
-            while position > 0 and result[position][0] > 'i':
-                position -= 1
+    # Separar palabras normales y especiales
+    normal_words = []
+    for i in range(position + 1):
+        normal_words.append(sorted_words[i])
+    special_words = sorted_words[position + 1::]
+    special_words.sort(reverse=True)
 
-            # Corregir posicion
-            result.insert(position, result.pop(index))
-        elif result[index][0] == 'ó':
-            # Encontrar posicion de ó
-            position = LENGTH - 2
-            while position > 0 and result[position][0] > 'o':
-                position -= 1
+    if DEBUG_MODE:
+        print("Normal words:",normal_words)
+        print("Special words:",special_words)
 
-            # Corregir posicion
-            result.insert(position, result.pop(index))
-        elif result[index][0] == 'ú':
-            # Encontrar posicion de ú
-            position = LENGTH - 2
-            while position > 0 and result[position][0] > 'u':
-                position -= 1
-
-            # Corregir posicion
-            result.insert(position, result.pop(index))
+    # Ordenamiento
+    # Las letras especiales quedan asi: á,é,í,ñ,ó,ú
+    # Se insertaran los caracteres en orden, pero se encontrara su posicion desde el final
+    result = normal_words
+    for word in special_words:
+        limite = return_limit_for_spanish_sort(word[0])
         
+        # La ñ es un caso completamente patológico (igualmente amamos nuestro idioma)
+        is_ñ_present = False
+        ñ_word = ''
+        if word[0] != 'ñ':
+            i = 0
+            while  i < len(result) and (result[i][0] < limite) :
+                i += 1
+
+            if i < len(result):
+                result.insert(i,word)
+            else:
+                result.append(word)
+        else:
+            print("IM HERE")
+            is_ñ_present = True
+            ñ_word += word
+    
+    print(ñ_word)
+    if is_ñ_present:
+        result = correct_ñ_position_tp2(result,ñ_word)
+
+    return result
+
+def correct_ñ_position_tp2(words, ñ_word):
+    i = 0
+    LENGTH = len(words)
+    while i < LENGTH and not is_ñ_in_correct_position(words, i):
+        i += 1
+    words.insert(i,ñ_word)
+
+    if DEBUG_MODE:
+        print("CHEEEEEEEEEEEEEEEE ",words)
+
+    return words
+
+def is_ñ_in_correct_position(words,i):
+    return words[i][0] > 'n' and not words[i][0] in ('á','é','í')
+
+def return_limit_for_spanish_sort(letter):
+    result = ''
+    if letter == 'á':
+        result = 'a'
+    elif letter == 'é':
+        result = 'e'
+    elif letter == 'í':
+        result = 'i'
+    elif letter == 'ó':
+        result = 'o'
+    elif letter == 'ú':
+        result = 'u'
+
+    return result
+
+def return_first_letter_of_words(random_words):
+    '''
+    ASUME QUE LAS PALABRAS VIENEN ORDENADAS POR SPANISH_SORT
+    '''
+
+    result = []
+    for word in random_words:
+        if word[0] == 'á':
+            result.append('a')
+        elif word[0] == 'é':
+            result.append('e')
+        elif word[0] == 'í':
+            result.append('i')
+        elif word[0] == 'ó':
+            result.append('o')
+        elif word[0] == 'ú':
+            result.append('u')
+        else:
+            result.append(word[0])
     return result
 
 
@@ -255,16 +334,48 @@ def correct_ñ_position(letters):
 
 def main_etapa3():
     # TP N°1
-    dictionary = Etapa2.return_short_words(obtener_lista_definiciones())
+    if DEBUG_TP == 1:
+        dictionary = Etapa2.return_short_words(obtener_lista_definiciones())
     
-    # TEST DE CONSIGA
-    if DEBUG_MODE:
-        AMOUNT_ITERATIONS = 100
-        for i in range(0,AMOUNT_ITERATIONS):
-            print("Intento numero:",i + 1)
-            letters = return_random_letters(Etapa2.ALPHABET)
-            rosco = generate_rosco(dictionary, letters)
-            for ii in range(len(rosco)):
-                print("LETRA:",letters[ii],"| PALABRA:",rosco[ii])
+        # TEST DE CONSIGA
+        if DEBUG_MODE:
+            AMOUNT_ITERATIONS = 100
+            for i in range(0,AMOUNT_ITERATIONS):
+                print("Intento numero:",i + 1)
+                letters = return_random_letters(Etapa2.ALPHABET)
+                rosco = generate_rosco(dictionary, letters)
+                for ii in range(len(rosco)):
+                    print("LETRA:",letters[ii],"| PALABRA:",rosco[ii])
 
-#main_etapa3()
+    # TP N°2 
+    elif DEBUG_TP == 2:
+
+        if DEBUG_MODE:
+            word_dictionary = Etapa8.return_words_and_definition()
+            with open("hotfix_test","a") as hotfix:
+                hotfix.write("--------------------------------------------------------------------------\n")
+                hotfix.write("Nueva prueba\n")
+                hotfix.write("--------------------------------------------------------------------------\n")
+                AMOUNT_ITERATIONS = 100
+                for i in range(0,AMOUNT_ITERATIONS):
+                    hotfix.write("Intento numero:" + str(i + 1) + "\n")
+                    print("Intento numero:",i + 1)
+                    random_words = generate_random_letters_and_words(Etapa2.ALPHABET, word_dictionary)
+                    random_letters = return_first_letter_of_words(random_words)
+                    
+                    output = ''
+                    for letter in random_letters:
+                        output += ('[' + str(letter) + ']')
+                    output += '\n'    
+                    # hotfix.write(output)
+
+                    for word in random_words:
+                        if word[0] in ('á','é','í','ó','ú'):
+                            print([word[0] for word in random_words])
+                            print('PALABRA: ' + word + ' LETRA: ' + word[0])
+
+    else:
+        #spanish_sort(['útero','ímpetu', 'vaca','árbol','éxtasis','óraculo','ñandú','balde'])
+        spanish_sort(['útero','ímpetu','ñandú','vaca','árbol','éxtasis','óraculo','balde'])
+
+main_etapa3()
