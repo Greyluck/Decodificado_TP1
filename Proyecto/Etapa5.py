@@ -34,4 +34,4 @@ def main_etapa5():
     """
     play_match()
 
-main_etapa5()
+#main_etapa5()

@@ -309,6 +309,6 @@ def main_etapa9():
     '''
     play_new_rosco(['ej1','ej2','ej3'])
 
-main_etapa9()
+#main_etapa9()
 
 

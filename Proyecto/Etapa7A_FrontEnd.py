@@ -16,7 +16,7 @@ MENU_VALUE_USER_CREATION = 1            #   1) Creacion de usuario
 MENU_VALUE_PLAYING_GAME = 2             #   2) Jugando
 
 # Debug Mode
-debug_mode = True
+debug_mode = False
 
 # -----------------------------------------------------------------------------------------------
 # Variables y constantes

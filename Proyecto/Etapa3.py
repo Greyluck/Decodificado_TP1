@@ -389,4 +389,4 @@ def main_etapa3():
                 output = word + '\n'
                 end_file.write(output)
 
-main_etapa3()
+#main_etapa3()
