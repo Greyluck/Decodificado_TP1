@@ -9,8 +9,8 @@ import Etapa2
 import Etapa10
 import Etapa8 
 
-DEBUG_MODE = False
-DEBUG_TP = 3
+DEBUG_MODE = True
+DEBUG_TP = 2
 
 def generate_random_letters_and_words(letters, dictionary):
     '''
@@ -333,6 +333,8 @@ def correct_ñ_position(letters):
 
     return result
 
+def test_2(letters):
+    return 'á' in letters or 'é' in letters or 'í' in letters or 'ó' in letters or 'ú' in letters
 
 def main_etapa3():
     # TP N°1
@@ -358,35 +360,40 @@ def main_etapa3():
                 hotfix.write("--------------------------------------------------------------------------\n")
                 hotfix.write("Nueva prueba\n")
                 hotfix.write("--------------------------------------------------------------------------\n")
-                AMOUNT_ITERATIONS = 100
+                
+                AMOUNT_ITERATIONS = 5000
                 for i in range(0,AMOUNT_ITERATIONS):
-                    hotfix.write("Intento numero:" + str(i + 1) + "\n")
-                    print("Intento numero:",i + 1)
+                    #hotfix.write("Intento numero:" + str(i + 1) + "\n")
                     random_words = generate_random_letters_and_words(Etapa2.ALPHABET, word_dictionary)
-                    random_letters = return_first_letter_of_words(random_words)
                     
-                    output = ''
-                    for letter in random_letters:
-                        output += ('[' + str(letter) + ']')
-                    output += '\n'    
-                    hotfix.write(output)
+                    letters = [word[0] for word in random_words]
+                    
+                    if test_2(letters):
+                        output = ''
+                        count = 0
+                        for letter in letters:
+                            if letter in ('á','é','í','ó','ú'):
+                                count += 1
+                            output += ('[' + letter + ']')
+                        output += '\n'
 
-                    for word in random_words:
-                        if word[0] in ('á','é','í','ó','ú','ñ'):
-                            print([word[0] for word in random_words])
-                            print('PALABRA: ' + word + ' LETRA: ' + word[0])
+                        if count > 1:
+                            output += 'ALERTA - CASO PATOLóGICO\n'    
+                        hotfix.write(output)
 
     elif DEBUG_TP == 3:
         #spanish_sort(['útero','ímpetu', 'vaca','árbol','éxtasis','óraculo','ñandú','balde'])
         caso_3 = ['útero','ímpetu','ñandú','vaca','árbol','éxtasis','óraculo','balde']
         print("TEST 3\nSe ordenara: {}\n Ordenado:".format(caso_3))
         print(spanish_sort(caso_3))
-    else:
+    elif DEBUG_TP == 4:
         with open("test_palabras.txt",'a+') as end_file:
             end_file.write("\n\n\n\n\n\nNEWRUN\n\n\n\n\n\n")
             words_for_file = spanish_sort([word for word in Etapa8.return_words_and_definition().keys() if not word[0] in ('a','e','i','o','u')])
             for word in words_for_file:
                 output = word + '\n'
                 end_file.write(output)
+    
+
 
 main_etapa3()
